@@ -1,0 +1,319 @@
+<div class="flex flex-col h-full">
+    <!-- Logo Area - Enhanced -->
+    <div class="flex items-center h-16 px-5 bg-primary-800/50 border-b border-primary-600/30">
+        <a href="{{ route('dashboard') }}"
+           class="flex items-center space-x-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-800 rounded-lg px-2 py-1 -mx-2 transition-all duration-200">
+            <div class="w-9 h-9 bg-gradient-to-br from-gold-400 to-gold-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-gold-500/25 transition-shadow duration-200">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+            </div>
+            <div class="flex flex-col">
+                <span class="text-lg font-bold text-white leading-tight tracking-tight">Poimen</span>
+                <span class="text-[10px] text-gold-400/80 uppercase tracking-widest font-semibold">Church</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto scrollbar-thin" aria-label="Navigation principale">
+        <!-- Dashboard -->
+        <a href="{{ route('dashboard') }}"
+           class="nav-link {{ request()->routeIs('dashboard') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('dashboard') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+            </span>
+            <span class="nav-text">{{ __('app.dashboard.title') }}</span>
+        </a>
+
+        @can('members.view')
+        <!-- Members -->
+        <a href="{{ route('members.index') }}"
+           class="nav-link {{ request()->routeIs('members.*') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('members.*') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                </svg>
+            </span>
+            <span class="nav-text">{{ __('app.nav.members') }}</span>
+        </a>
+        @endcan
+
+        <!-- Structures Section -->
+        @canany(['branches.view', 'zones.view', 'bacentas.view', 'departments.view'])
+        <div class="nav-section">
+            <span class="nav-section-title">{{ __('app.nav.structures') }}</span>
+        </div>
+
+        @can('branches.view')
+        <a href="{{ route('branches.index') }}"
+           class="nav-link {{ request()->routeIs('branches.*') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('branches.*') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+            </span>
+            <span class="nav-text">{{ __('app.nav.branches') }}</span>
+        </a>
+        @endcan
+
+        @can('zones.view')
+        <a href="{{ route('zones.index') }}"
+           class="nav-link {{ request()->routeIs('zones.*') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('zones.*') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                </svg>
+            </span>
+            <span class="nav-text">{{ __('app.nav.zones') }}</span>
+        </a>
+        @endcan
+
+        @can('bacentas.view')
+        <a href="{{ route('bacentas.index') }}"
+           class="nav-link {{ request()->routeIs('bacentas.*') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('bacentas.*') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+            </span>
+            <span class="nav-text">{{ __('app.nav.bacentas') }}</span>
+        </a>
+        @endcan
+
+        @can('departments.view')
+        <a href="{{ route('departments.index') }}"
+           class="nav-link {{ request()->routeIs('departments.*') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('departments.*') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                </svg>
+            </span>
+            <span class="nav-text">{{ __('app.nav.departments') }}</span>
+        </a>
+        @endcan
+        @endcanany
+
+        <!-- Reports Section -->
+        @can('reports.view')
+        <div class="nav-section">
+            <span class="nav-section-title">{{ __('app.nav.reports') }}</span>
+        </div>
+
+        <a href="{{ route('reports.index') }}"
+           class="nav-link {{ request()->routeIs('reports.index') || request()->routeIs('reports.show') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('reports.index') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+            </span>
+            <span class="nav-text">{{ __('app.nav.attendance') }}</span>
+        </a>
+
+        @can('reports.create')
+        <a href="{{ route('reports.create') }}"
+           class="nav-link nav-link-accent {{ request()->routeIs('reports.create') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('reports.create') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+            </span>
+            <span class="nav-text">{{ __('app.attendance.submit_report') }}</span>
+        </a>
+        @endcan
+
+        <a href="{{ route('reports.weekly') }}"
+           class="nav-link {{ request()->routeIs('reports.weekly') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('reports.weekly') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+            </span>
+            <span class="nav-text">{{ __('app.attendance.weekly_report') }}</span>
+        </a>
+        @endcan
+
+        <!-- Finances Section -->
+        @canany(['finances.view', 'finances.view.own'])
+        <div class="nav-section">
+            <span class="nav-section-title">{{ __('app.nav.finances') }}</span>
+        </div>
+
+        @can('finances.view')
+        <a href="{{ route('finances.index') }}"
+           class="nav-link {{ request()->routeIs('finances.index') || request()->routeIs('finances.show') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('finances.index') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </span>
+            <span class="nav-text">{{ __('app.finances.title') }}</span>
+        </a>
+        @endcan
+
+        <a href="{{ route('finances.my-donations') }}"
+           class="nav-link {{ request()->routeIs('finances.my-donations') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('finances.my-donations') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                </svg>
+            </span>
+            <span class="nav-text">{{ __('app.finances.my_donations') }}</span>
+        </a>
+
+        @can('finances.view')
+        <a href="{{ route('finances.annual') }}"
+           class="nav-link {{ request()->routeIs('finances.annual') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('finances.annual') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+            </span>
+            <span class="nav-text">{{ __('app.finances.annual_summary') }}</span>
+        </a>
+        @endcan
+        @endcanany
+    </nav>
+
+    <!-- User Info - Enhanced -->
+    <div class="p-4 border-t border-primary-600/30 bg-primary-800/30">
+        <a href="{{ route('profile.show') }}"
+           class="flex items-center p-2 rounded-xl hover:bg-white/5 transition-colors duration-200 group focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400">
+            @if(auth()->user()->photo)
+                <img src="{{ Storage::url(auth()->user()->photo) }}" alt="" class="w-10 h-10 rounded-xl object-cover ring-2 ring-primary-500/50 group-hover:ring-gold-400/50 transition-all duration-200">
+            @else
+                <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center text-white text-sm font-semibold ring-2 ring-primary-500/50 group-hover:ring-gold-400/50 transition-all duration-200">
+                    {{ substr(auth()->user()->first_name, 0, 1) }}{{ substr(auth()->user()->last_name, 0, 1) }}
+                </div>
+            @endif
+            <div class="ml-3 flex-1 min-w-0">
+                <p class="text-sm font-semibold text-white truncate">{{ auth()->user()->full_name }}</p>
+                <p class="text-xs text-white/60 truncate">{{ auth()->user()->roles->first()?->name ?? 'Membre' }}</p>
+            </div>
+            <svg class="w-4 h-4 text-white/40 group-hover:text-white/60 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+</div>
+
+<style>
+    /* Navigation Link Styles */
+    .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 0.625rem 0.875rem;
+        color: rgba(255, 255, 255, 0.75);
+        border-radius: 0.75rem;
+        transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        position: relative;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+        color: white;
+    }
+
+    .nav-link:focus {
+        outline: none;
+    }
+
+    .nav-link:focus-visible {
+        outline: 2px solid var(--color-gold-400, #d4cc82);
+        outline-offset: 2px;
+    }
+
+    .nav-link:active {
+        transform: scale(0.98);
+    }
+
+    .nav-link-active {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
+        color: white;
+        box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-link-active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 60%;
+        background: linear-gradient(180deg, var(--color-gold-400, #d4cc82), var(--color-gold-500, #c9a227));
+        border-radius: 0 4px 4px 0;
+    }
+
+    .nav-link-accent:not(.nav-link-active) {
+        background: linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(201, 162, 39, 0.05) 100%);
+        border: 1px solid rgba(201, 162, 39, 0.2);
+    }
+
+    .nav-link-accent:not(.nav-link-active):hover {
+        background: linear-gradient(135deg, rgba(201, 162, 39, 0.25) 0%, rgba(201, 162, 39, 0.1) 100%);
+        border-color: rgba(201, 162, 39, 0.3);
+    }
+
+    .nav-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.75rem;
+        margin-right: 0.75rem;
+        opacity: 0.85;
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .nav-link:hover .nav-icon {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    .nav-text {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Section Styles */
+    .nav-section {
+        padding-top: 1.25rem;
+        padding-bottom: 0.375rem;
+    }
+
+    .nav-section-title {
+        display: block;
+        padding: 0 0.875rem;
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    /* Accessibility: Respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+        .nav-link,
+        .nav-icon {
+            transition: none;
+        }
+    }
+</style>
