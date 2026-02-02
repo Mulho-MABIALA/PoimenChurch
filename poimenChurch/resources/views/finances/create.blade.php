@@ -4,7 +4,7 @@
     @section('page-title', __('app.finances.add_transaction'))
 
     <div class="mb-6">
-        <a href="{{ route('finances.index') }}" class="text-primary-600 hover:text-primary-700 flex items-center">
+        <a href="{{ route('finances.incomes') }}" class="text-primary-600 hover:text-primary-700 flex items-center">
             <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
@@ -18,6 +18,7 @@
 
             <form method="POST" action="{{ route('finances.store') }}">
                 @csrf
+                <input type="hidden" name="category" value="income">
 
                 <div class="space-y-4">
                     <div class="form-group">

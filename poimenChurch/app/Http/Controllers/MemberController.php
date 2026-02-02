@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MemberRequest;
 use App\Models\Bacenta;
+use App\Models\Branch;
 use App\Models\Department;
 use App\Models\User;
 use App\Models\Zone;
@@ -16,7 +17,7 @@ class MemberController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::with(['roles', 'bacentas', 'zones', 'departments'])
+        $query = User::with(['roles', 'branches', 'bacentas', 'zones', 'departments'])
             ->when($request->search, function ($q, $search) {
                 $q->where(function ($query) use ($search) {
                     $query->where('first_name', 'like', "%{$search}%")
@@ -52,11 +53,12 @@ class MemberController extends Controller
     public function create()
     {
         $roles = Role::all();
+        $branches = Branch::where('is_active', true)->get();
         $zones = Zone::where('is_active', true)->get();
         $bacentas = Bacenta::where('is_active', true)->get();
         $departments = Department::where('is_active', true)->get();
 
-        return view('members.create', compact('roles', 'zones', 'bacentas', 'departments'));
+        return view('members.create', compact('roles', 'branches', 'zones', 'bacentas', 'departments'));
     }
 
     public function store(MemberRequest $request)
@@ -80,6 +82,10 @@ class MemberController extends Controller
         }
 
         // Attach to structures
+        if ($request->has('branch_ids')) {
+            $member->branches()->sync($request->branch_ids);
+        }
+
         if ($request->has('zone_ids')) {
             $member->zones()->sync($request->zone_ids);
         }
@@ -98,7 +104,7 @@ class MemberController extends Controller
 
     public function show(User $member)
     {
-        $member->load(['roles', 'zones', 'bacentas', 'departments', 'donations', 'attendances']);
+        $member->load(['roles', 'branches', 'zones', 'bacentas', 'departments', 'donations', 'attendances']);
 
         // Statistiques du membre
         $stats = [
@@ -113,11 +119,12 @@ class MemberController extends Controller
     public function edit(User $member)
     {
         $roles = Role::all();
+        $branches = Branch::where('is_active', true)->get();
         $zones = Zone::where('is_active', true)->get();
         $bacentas = Bacenta::where('is_active', true)->get();
         $departments = Department::where('is_active', true)->get();
 
-        return view('members.edit', compact('member', 'roles', 'zones', 'bacentas', 'departments'));
+        return view('members.edit', compact('member', 'roles', 'branches', 'zones', 'bacentas', 'departments'));
     }
 
     public function update(MemberRequest $request, User $member)
@@ -148,6 +155,10 @@ class MemberController extends Controller
         }
 
         // Sync structures
+        if ($request->has('branch_ids')) {
+            $member->branches()->sync($request->branch_ids);
+        }
+
         if ($request->has('zone_ids')) {
             $member->zones()->sync($request->zone_ids);
         }
@@ -166,11 +177,38 @@ class MemberController extends Controller
 
     public function destroy(User $member)
     {
-        // Soft delete
+        // Soft delete (archive)
         $member->delete();
 
         return redirect()->route('members.index')
-            ->with('success', __('app.messages.deleted', ['item' => __('app.members.title')]));
+            ->with('success', 'Le membre a été archivé avec succès.');
+    }
+
+    public function restore($id)
+    {
+        $member = User::withTrashed()->findOrFail($id);
+        $member->restore();
+
+        return redirect()->route('members.index')
+            ->with('success', 'Le membre a été restauré avec succès.');
+    }
+
+    public function archived(Request $request)
+    {
+        $members = User::onlyTrashed()
+            ->with(['roles', 'branches', 'zones'])
+            ->when($request->search, function ($q, $search) {
+                $q->where(function ($query) use ($search) {
+                    $query->where('first_name', 'like', "%{$search}%")
+                          ->orWhere('last_name', 'like', "%{$search}%")
+                          ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->latest('deleted_at')
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('members.archived', compact('members'));
     }
 
     public function toggleStatus(User $member)

@@ -34,6 +34,58 @@
         }
     </style>
 
+    <!-- Quick Navigation -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <a href="{{ route('finances.incomes') }}" class="card hover:shadow-md transition-shadow flex items-center gap-4 p-4">
+            <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+            </div>
+            <div>
+                <p class="font-semibold text-gray-900">Entrées</p>
+                <p class="text-sm text-gray-500">Dîmes, offrandes</p>
+            </div>
+        </a>
+
+        <a href="{{ route('finances.expenses') }}" class="card hover:shadow-md transition-shadow flex items-center gap-4 p-4">
+            <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+                </svg>
+            </div>
+            <div>
+                <p class="font-semibold text-gray-900">Dépenses</p>
+                <p class="text-sm text-gray-500">Sorties de caisse</p>
+            </div>
+        </a>
+
+        <a href="{{ route('finances.annual') }}" class="card hover:shadow-md transition-shadow flex items-center gap-4 p-4">
+            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+            </div>
+            <div>
+                <p class="font-semibold text-gray-900">Rapport annuel</p>
+                <p class="text-sm text-gray-500">Résumé {{ now()->year }}</p>
+            </div>
+        </a>
+
+        <a href="{{ route('finances.zones') }}" class="card hover:shadow-md transition-shadow flex items-center gap-4 p-4">
+            <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+            </div>
+            <div>
+                <p class="font-semibold text-gray-900">Par zone</p>
+                <p class="text-sm text-gray-500">Rapport par zone</p>
+            </div>
+        </a>
+    </div>
+
     <!-- Page Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
@@ -42,15 +94,24 @@
                 <span class="font-semibold text-primary-600">{{ $transactions->total() }}</span> transactions enregistrées
             </p>
         </div>
-        @can('finances.create')
-        <a href="{{ route('finances.create') }}"
-           class="inline-flex items-center justify-center px-4 py-2.5 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors shadow-sm">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-            </svg>
-            {{ __('app.finances.add_transaction') }}
-        </a>
-        @endcan
+        <div class="flex gap-2">
+            @can('finances.create')
+            <a href="{{ route('finances.create') }}"
+               class="inline-flex items-center justify-center px-4 py-2.5 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition-colors shadow-sm">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Nouvelle entrée
+            </a>
+            <a href="{{ route('finances.create-expense') }}"
+               class="inline-flex items-center justify-center px-4 py-2.5 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition-colors shadow-sm">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+                </svg>
+                Nouvelle dépense
+            </a>
+            @endcan
+        </div>
     </div>
 
     <!-- Stats Cards -->
@@ -103,7 +164,7 @@
                 </div>
                 <p class="text-sm font-medium text-white/80">Total {{ $currentYear }}</p>
             </div>
-            <p class="amount-display text-2xl font-bold">{{ number_format($stats['total'], 0, ',', ' ') }}</p>
+            <p class="amount-display text-2xl font-bold">{{ number_format($stats['total_incomes'], 0, ',', ' ') }}</p>
             <p class="text-xs text-white/60 mt-1">XOF</p>
         </div>
     </div>

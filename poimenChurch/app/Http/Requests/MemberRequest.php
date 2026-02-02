@@ -26,7 +26,7 @@ class MemberRequest extends FormRequest
                 'max:255',
                 Rule::unique('users', 'email')->ignore($userId),
             ],
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'required|string|max:20',
             'photo' => 'nullable|image|max:2048',
             'date_of_birth' => 'nullable|date|before:today',
             'gender' => 'nullable|in:male,female',
@@ -43,6 +43,8 @@ class MemberRequest extends FormRequest
             'roles.*' => 'exists:roles,name',
             'zone_ids' => 'nullable|array',
             'zone_ids.*' => 'exists:zones,id',
+            'branch_ids' => 'nullable|array',
+            'branch_ids.*' => 'exists:branches,id',
             'bacenta_ids' => 'nullable|array',
             'bacenta_ids.*' => 'exists:bacentas,id',
             'department_ids' => 'nullable|array',
@@ -59,6 +61,24 @@ class MemberRequest extends FormRequest
         return $rules;
     }
 
+    /**
+     * Configure the validator instance.
+     */
+    public function withValidator($validator): void
+    {
+        $validator->after(function ($validator) {
+            $hasZone = !empty($this->zone_ids) && count($this->zone_ids) > 0;
+            $hasBranch = !empty($this->branch_ids) && count($this->branch_ids) > 0;
+
+            if (!$hasZone && !$hasBranch) {
+                $validator->errors()->add(
+                    'zone_ids',
+                    'Le membre doit appartenir à au moins une zone ou une branche.'
+                );
+            }
+        });
+    }
+
     public function messages(): array
     {
         return [
@@ -67,6 +87,7 @@ class MemberRequest extends FormRequest
             'email.required' => __('app.validation.required'),
             'email.email' => __('app.validation.email'),
             'email.unique' => __('app.validation.unique'),
+            'phone.required' => 'Le numéro de téléphone est obligatoire.',
             'photo.image' => 'Le fichier doit être une image.',
             'photo.max' => 'L\'image ne doit pas dépasser 2 Mo.',
         ];

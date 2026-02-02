@@ -1,16 +1,20 @@
 <div class="flex flex-col h-full">
-    <!-- Logo Area - Enhanced -->
-    <div class="flex items-center h-16 px-5 bg-primary-800/50 border-b border-primary-600/30">
+    <!-- Logo Area - Premium Design -->
+    <div class="flex items-center h-[4.5rem] px-5 bg-gradient-to-b from-primary-800/60 to-primary-800/30 border-b border-primary-500/20">
         <a href="{{ route('dashboard') }}"
-           class="flex items-center space-x-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-800 rounded-lg px-2 py-1 -mx-2 transition-all duration-200">
-            <div class="w-9 h-9 bg-gradient-to-br from-gold-400 to-gold-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-gold-500/25 transition-shadow duration-200">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                </svg>
+           class="flex items-center space-x-3.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-800 rounded-xl px-2.5 py-2 -mx-2 transition-all duration-300 hover:bg-white/5">
+            <div class="relative">
+                <div class="w-10 h-10 bg-gradient-to-br from-gold-400 via-gold-500 to-gold-600 rounded-xl flex items-center justify-center shadow-lg shadow-gold-500/20 group-hover:shadow-gold-500/40 transition-all duration-300 group-hover:scale-105">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                </div>
+                <!-- Glow effect -->
+                <div class="absolute inset-0 bg-gold-400/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true"></div>
             </div>
             <div class="flex flex-col">
-                <span class="text-lg font-bold text-white leading-tight tracking-tight">Poimen</span>
-                <span class="text-[10px] text-gold-400/80 uppercase tracking-widest font-semibold">Church</span>
+                <span class="text-xl font-bold text-white leading-tight tracking-tight">Poimen</span>
+                <span class="text-[10px] text-gold-400 uppercase tracking-[0.2em] font-semibold">Church Admin</span>
             </div>
         </a>
     </div>
@@ -187,47 +191,109 @@
         </a>
         @endcan
         @endcanany
+
+        <!-- Events Section -->
+        <div class="nav-section">
+            <span class="nav-section-title">Contenu</span>
+        </div>
+
+        <a href="{{ route('admin.events.index') }}"
+           class="nav-link {{ request()->routeIs('admin.events.*') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('admin.events.*') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+            </span>
+            <span class="nav-text">Événements</span>
+        </a>
+
+        <a href="{{ route('admin.schedules.index') }}"
+           class="nav-link {{ request()->routeIs('admin.schedules.*') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('admin.schedules.*') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </span>
+            <span class="nav-text">Horaires des Cultes</span>
+        </a>
+
+        <a href="{{ route('admin.testimonials.index') }}"
+           class="nav-link {{ request()->routeIs('admin.testimonials.*') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('admin.testimonials.*') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+            </span>
+            <span class="nav-text">Temoignages</span>
+        </a>
     </nav>
 
-    <!-- User Info - Enhanced -->
-    <div class="p-4 border-t border-primary-600/30 bg-primary-800/30">
+    <!-- User Info - Premium Design -->
+    <div class="p-4 border-t border-primary-500/20 bg-gradient-to-t from-primary-900/50 to-transparent">
         <a href="{{ route('profile.show') }}"
-           class="flex items-center p-2 rounded-xl hover:bg-white/5 transition-colors duration-200 group focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400">
+           class="flex items-center p-3 rounded-2xl bg-white/5 hover:bg-white/10 transition-all duration-300 group focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 border border-transparent hover:border-white/10">
             @if(auth()->user()->photo)
-                <img src="{{ Storage::url(auth()->user()->photo) }}" alt="" class="w-10 h-10 rounded-xl object-cover ring-2 ring-primary-500/50 group-hover:ring-gold-400/50 transition-all duration-200">
+                <img src="{{ Storage::url(auth()->user()->photo) }}" alt="" class="w-11 h-11 rounded-xl object-cover ring-2 ring-white/20 group-hover:ring-gold-400/50 transition-all duration-300 group-hover:scale-105">
             @else
-                <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center text-white text-sm font-semibold ring-2 ring-primary-500/50 group-hover:ring-gold-400/50 transition-all duration-200">
+                <div class="w-11 h-11 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl flex items-center justify-center text-white text-sm font-bold ring-2 ring-white/20 group-hover:ring-gold-400/50 transition-all duration-300 group-hover:scale-105 shadow-lg">
                     {{ substr(auth()->user()->first_name, 0, 1) }}{{ substr(auth()->user()->last_name, 0, 1) }}
                 </div>
             @endif
-            <div class="ml-3 flex-1 min-w-0">
-                <p class="text-sm font-semibold text-white truncate">{{ auth()->user()->full_name }}</p>
-                <p class="text-xs text-white/60 truncate">{{ auth()->user()->roles->first()?->name ?? 'Membre' }}</p>
+            <div class="ml-3.5 flex-1 min-w-0">
+                <p class="text-sm font-bold text-white truncate">{{ auth()->user()->full_name }}</p>
+                <p class="text-xs text-white/50 truncate flex items-center gap-1.5 mt-0.5">
+                    <span class="w-1.5 h-1.5 bg-green-400 rounded-full"></span>
+                    {{ auth()->user()->roles->first()?->name ?? 'Membre' }}
+                </p>
             </div>
-            <svg class="w-4 h-4 text-white/40 group-hover:text-white/60 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
+            <div class="p-1.5 rounded-lg bg-white/5 group-hover:bg-gold-500/20 transition-all duration-300">
+                <svg class="w-4 h-4 text-white/50 group-hover:text-gold-400 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </div>
         </a>
     </div>
 </div>
 
 <style>
-    /* Navigation Link Styles */
+    /* Premium Navigation Link Styles */
     .nav-link {
         display: flex;
         align-items: center;
-        padding: 0.625rem 0.875rem;
-        color: rgba(255, 255, 255, 0.75);
-        border-radius: 0.75rem;
-        transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        padding: 0.75rem 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        border-radius: 0.875rem;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         position: relative;
         font-size: 0.875rem;
         font-weight: 500;
+        letter-spacing: 0.01em;
+    }
+
+    .nav-link::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 0;
+        background: linear-gradient(180deg, var(--color-gold-400, #d4cc82), var(--color-gold-500, #c9a227));
+        border-radius: 0 4px 4px 0;
+        transition: height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .nav-link:hover {
-        background-color: rgba(255, 255, 255, 0.08);
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
         color: white;
+        transform: translateX(4px);
+    }
+
+    .nav-link:hover::before {
+        height: 50%;
     }
 
     .nav-link:focus {
@@ -240,50 +306,60 @@
     }
 
     .nav-link:active {
-        transform: scale(0.98);
+        transform: translateX(2px) scale(0.99);
     }
 
     .nav-link-active {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 100%);
         color: white;
-        box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.15);
+        box-shadow:
+            0 4px 12px -4px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
     .nav-link-active::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 3px;
         height: 60%;
-        background: linear-gradient(180deg, var(--color-gold-400, #d4cc82), var(--color-gold-500, #c9a227));
-        border-radius: 0 4px 4px 0;
+    }
+
+    .nav-link-active:hover {
+        transform: none;
     }
 
     .nav-link-accent:not(.nav-link-active) {
-        background: linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(201, 162, 39, 0.05) 100%);
-        border: 1px solid rgba(201, 162, 39, 0.2);
+        background: linear-gradient(90deg, rgba(201, 162, 39, 0.18) 0%, rgba(201, 162, 39, 0.08) 100%);
+        border: 1px solid rgba(201, 162, 39, 0.25);
+        color: rgba(255, 255, 255, 0.9);
     }
 
     .nav-link-accent:not(.nav-link-active):hover {
-        background: linear-gradient(135deg, rgba(201, 162, 39, 0.25) 0%, rgba(201, 162, 39, 0.1) 100%);
-        border-color: rgba(201, 162, 39, 0.3);
+        background: linear-gradient(90deg, rgba(201, 162, 39, 0.28) 0%, rgba(201, 162, 39, 0.15) 100%);
+        border-color: rgba(201, 162, 39, 0.4);
+        color: white;
     }
 
     .nav-icon {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 1.75rem;
+        width: 2rem;
+        height: 2rem;
         margin-right: 0.75rem;
-        opacity: 0.85;
-        transition: opacity 0.2s, transform 0.2s;
+        opacity: 0.8;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 0.625rem;
+        padding: 0.375rem;
     }
 
     .nav-link:hover .nav-icon {
         opacity: 1;
-        transform: scale(1.05);
+        transform: scale(1.08);
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-link-active .nav-icon {
+        opacity: 1;
+        background: rgba(201, 162, 39, 0.15);
     }
 
     .nav-text {
@@ -293,27 +369,40 @@
         text-overflow: ellipsis;
     }
 
-    /* Section Styles */
+    /* Premium Section Styles */
     .nav-section {
-        padding-top: 1.25rem;
-        padding-bottom: 0.375rem;
+        padding-top: 1.5rem;
+        padding-bottom: 0.5rem;
     }
 
     .nav-section-title {
-        display: block;
-        padding: 0 0.875rem;
-        font-size: 0.65rem;
+        display: flex;
+        align-items: center;
+        padding: 0 1rem;
+        font-size: 0.625rem;
         font-weight: 700;
-        color: rgba(255, 255, 255, 0.4);
+        color: rgba(255, 255, 255, 0.35);
         text-transform: uppercase;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.15em;
+    }
+
+    .nav-section-title::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        margin-left: 0.75rem;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent);
     }
 
     /* Accessibility: Respect reduced motion */
     @media (prefers-reduced-motion: reduce) {
         .nav-link,
-        .nav-icon {
+        .nav-icon,
+        .nav-link::before {
             transition: none;
+        }
+        .nav-link:hover {
+            transform: none;
         }
     }
 </style>

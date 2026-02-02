@@ -20,17 +20,26 @@ class FinanceController extends Controller
 
         // Filtrer pour les membres standards (voir uniquement leurs propres dons)
         if ($user->hasRole('member') && !$user->hasAnyRole(['bishop', 'admin', 'treasurer', 'reverend'])) {
-            $query->where('user_id', $user->id);
+            $query->where('user_id', $user->id)->incomes();
         }
 
         $transactions = $query->when($request->search, function ($q, $search) {
-                $q->whereHas('user', fn($query) =>
-                    $query->where('first_name', 'like', "%{$search}%")
+                $q->where(function ($query) use ($search) {
+                    $query->whereHas('user', fn($q) =>
+                        $q->where('first_name', 'like', "%{$search}%")
                           ->orWhere('last_name', 'like', "%{$search}%")
-                );
+                    )->orWhere('description', 'like', "%{$search}%")
+                      ->orWhere('vendor', 'like', "%{$search}%");
+                });
+            })
+            ->when($request->category, function ($q, $category) {
+                $q->where('category', $category);
             })
             ->when($request->transaction_type, function ($q, $type) {
                 $q->where('transaction_type', $type);
+            })
+            ->when($request->expense_category, function ($q, $category) {
+                $q->where('expense_category', $category);
             })
             ->when($request->payment_method, function ($q, $method) {
                 $q->where('payment_method', $method);
@@ -56,12 +65,92 @@ class FinanceController extends Controller
 
         $zones = Zone::where('is_active', true)->get();
         $branches = Branch::where('is_active', true)->get();
+        $expenseCategories = FinancialTransaction::EXPENSE_CATEGORIES;
 
         // Statistiques
         $currentYear = $request->input('year', now()->year);
         $stats = $this->getStats($user, $currentYear);
 
-        return view('finances.index', compact('transactions', 'zones', 'branches', 'stats', 'currentYear'));
+        return view('finances.index', compact('transactions', 'zones', 'branches', 'expenseCategories', 'stats', 'currentYear'));
+    }
+
+    // Entrées (revenus)
+    public function incomes(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = FinancialTransaction::incomes()
+            ->with(['user', 'branch', 'zone', 'recordedBy']);
+
+        if ($user->hasRole('member') && !$user->hasAnyRole(['bishop', 'admin', 'treasurer', 'reverend'])) {
+            $query->where('user_id', $user->id);
+        }
+
+        $transactions = $query->when($request->search, function ($q, $search) {
+                $q->whereHas('user', fn($query) =>
+                    $query->where('first_name', 'like', "%{$search}%")
+                          ->orWhere('last_name', 'like', "%{$search}%")
+                );
+            })
+            ->when($request->type, function ($q, $type) {
+                $q->where('transaction_type', $type);
+            })
+            ->when($request->payment_method, function ($q, $method) {
+                $q->where('payment_method', $method);
+            })
+            ->when($request->year, function ($q, $year) {
+                $q->where('fiscal_year', $year);
+            })
+            ->latest('transaction_date')
+            ->paginate(20)
+            ->withQueryString();
+
+        $currentYear = $request->input('year', now()->year);
+        $stats = [
+            'total_tithes' => FinancialTransaction::getTotalByType('tithe', $currentYear),
+            'total_offerings' => FinancialTransaction::getTotalByType('offering', $currentYear),
+            'total_special' => FinancialTransaction::getTotalByType('special_offering', $currentYear),
+            'total_incomes' => FinancialTransaction::getTotalIncomes($currentYear),
+            'total_expenses' => FinancialTransaction::getTotalExpenses($currentYear),
+            'balance' => FinancialTransaction::getBalance($currentYear),
+        ];
+
+        return view('finances.incomes', compact('transactions', 'stats', 'currentYear'));
+    }
+
+    // Sorties (dépenses)
+    public function expenses(Request $request)
+    {
+        $transactions = FinancialTransaction::expenses()
+            ->with(['branch', 'zone', 'recordedBy', 'approvedBy'])
+            ->when($request->search, function ($q, $search) {
+                $q->where(function ($query) use ($search) {
+                    $query->where('description', 'like', "%{$search}%")
+                          ->orWhere('vendor', 'like', "%{$search}%")
+                          ->orWhere('invoice_number', 'like', "%{$search}%");
+                });
+            })
+            ->when($request->expense_category, function ($q, $category) {
+                $q->where('expense_category', $category);
+            })
+            ->when($request->year, function ($q, $year) {
+                $q->where('fiscal_year', $year);
+            })
+            ->latest('transaction_date')
+            ->paginate(20)
+            ->withQueryString();
+
+        $currentYear = $request->input('year', now()->year);
+        $expenseCategories = FinancialTransaction::EXPENSE_CATEGORIES;
+        $expensesByCategory = FinancialTransaction::getExpensesByCategory($currentYear);
+
+        $stats = [
+            'total_expenses' => FinancialTransaction::getTotalExpenses($currentYear),
+            'total_incomes' => FinancialTransaction::getTotalIncomes($currentYear),
+            'balance' => FinancialTransaction::getBalance($currentYear),
+        ];
+
+        return view('finances.expenses', compact('transactions', 'expenseCategories', 'expensesByCategory', 'stats', 'currentYear'));
     }
 
     public function create()
@@ -69,8 +158,18 @@ class FinanceController extends Controller
         $members = User::where('is_active', true)->orderBy('last_name')->get();
         $zones = Zone::where('is_active', true)->get();
         $branches = Branch::where('is_active', true)->get();
+        $expenseCategories = FinancialTransaction::EXPENSE_CATEGORIES;
 
-        return view('finances.create', compact('members', 'zones', 'branches'));
+        return view('finances.create', compact('members', 'zones', 'branches', 'expenseCategories'));
+    }
+
+    public function createExpense()
+    {
+        $zones = Zone::where('is_active', true)->get();
+        $branches = Branch::where('is_active', true)->get();
+        $expenseCategories = FinancialTransaction::EXPENSE_CATEGORIES;
+
+        return view('finances.create-expense', compact('zones', 'branches', 'expenseCategories'));
     }
 
     public function store(FinancialTransactionRequest $request)
@@ -79,17 +178,25 @@ class FinanceController extends Controller
         $data['recorded_by'] = Auth::id();
         $data['fiscal_year'] = now()->parse($data['transaction_date'])->year;
 
+        // Set default currency if not provided
+        if (empty($data['currency'])) {
+            $data['currency'] = 'CDF';
+        }
+
         FinancialTransaction::create($data);
 
-        return redirect()->route('finances.index')
-            ->with('success', __('app.messages.created', ['item' => __('app.finances.title')]));
+        $route = $data['category'] === 'expense' ? 'finances.expenses' : 'finances.incomes';
+        $message = $data['category'] === 'expense' ? 'Dépense enregistrée avec succès.' : 'Entrée enregistrée avec succès.';
+
+        return redirect()->route($route)
+            ->with('success', $message);
     }
 
     public function show(FinancialTransaction $finance)
     {
         $this->authorizeAccess($finance);
 
-        $finance->load(['user', 'branch', 'zone', 'recordedBy']);
+        $finance->load(['user', 'branch', 'zone', 'recordedBy', 'approvedBy']);
 
         return view('finances.show', compact('finance'));
     }
@@ -101,8 +208,9 @@ class FinanceController extends Controller
         $members = User::where('is_active', true)->orderBy('last_name')->get();
         $zones = Zone::where('is_active', true)->get();
         $branches = Branch::where('is_active', true)->get();
+        $expenseCategories = FinancialTransaction::EXPENSE_CATEGORIES;
 
-        return view('finances.edit', compact('finance', 'members', 'zones', 'branches'));
+        return view('finances.edit', compact('finance', 'members', 'zones', 'branches', 'expenseCategories'));
     }
 
     public function update(FinancialTransactionRequest $request, FinancialTransaction $finance)
@@ -114,7 +222,9 @@ class FinanceController extends Controller
 
         $finance->update($data);
 
-        return redirect()->route('finances.index')
+        $route = $finance->isExpense() ? 'finances.expenses' : 'finances.incomes';
+
+        return redirect()->route($route)
             ->with('success', __('app.messages.updated', ['item' => __('app.finances.title')]));
     }
 
@@ -122,9 +232,12 @@ class FinanceController extends Controller
     {
         $this->authorizeAccess($finance);
 
+        $isExpense = $finance->isExpense();
         $finance->delete();
 
-        return redirect()->route('finances.index')
+        $route = $isExpense ? 'finances.expenses' : 'finances.incomes';
+
+        return redirect()->route($route)
             ->with('success', __('app.messages.deleted', ['item' => __('app.finances.title')]));
     }
 
@@ -134,6 +247,7 @@ class FinanceController extends Controller
         $user = Auth::user();
 
         $donations = $user->donations()
+            ->incomes()
             ->when($request->year, function ($q, $year) {
                 $q->where('fiscal_year', $year);
             })
@@ -168,9 +282,12 @@ class FinanceController extends Controller
             'total_tithes' => FinancialTransaction::getTotalByType('tithe', $year),
             'total_offerings' => FinancialTransaction::getTotalByType('offering', $year),
             'total_special' => FinancialTransaction::getTotalByType('special_offering', $year),
+            'total_incomes' => FinancialTransaction::getTotalIncomes($year),
+            'total_expenses' => FinancialTransaction::getTotalExpenses($year),
+            'balance' => FinancialTransaction::getBalance($year),
         ];
 
-        $summary['grand_total'] = $summary['total_tithes'] + $summary['total_offerings'] + $summary['total_special'];
+        $expensesByCategory = FinancialTransaction::getExpensesByCategory($year);
 
         // Top donateurs (dîmes)
         $topTithers = User::withSum(['donations as total_tithes' => function ($q) use ($year) {
@@ -183,7 +300,7 @@ class FinanceController extends Controller
 
         $years = FinancialTransaction::distinct()->pluck('fiscal_year')->sort()->reverse();
 
-        return view('finances.annual-report', compact('monthlyTotals', 'summary', 'topTithers', 'year', 'years'));
+        return view('finances.annual-report', compact('monthlyTotals', 'summary', 'expensesByCategory', 'topTithers', 'year', 'years'));
     }
 
     // Rapport par zone
@@ -191,11 +308,14 @@ class FinanceController extends Controller
     {
         $year = $request->input('year', now()->year);
 
-        $zones = Zone::withSum(['financialTransactions as total_amount' => function ($q) use ($year) {
-            $q->where('fiscal_year', $year);
+        $zones = Zone::withSum(['financialTransactions as total_income' => function ($q) use ($year) {
+            $q->incomes()->where('fiscal_year', $year);
         }], 'amount')
+            ->withSum(['financialTransactions as total_expense' => function ($q) use ($year) {
+                $q->expenses()->where('fiscal_year', $year);
+            }], 'amount')
             ->where('is_active', true)
-            ->orderByDesc('total_amount')
+            ->orderByDesc('total_income')
             ->get();
 
         return view('finances.zone-report', compact('zones', 'year'));
@@ -203,17 +323,29 @@ class FinanceController extends Controller
 
     protected function getStats($user, $year)
     {
-        $query = FinancialTransaction::where('fiscal_year', $year);
+        $incomeQuery = FinancialTransaction::incomes()->where('fiscal_year', $year);
+        $expenseQuery = FinancialTransaction::expenses()->where('fiscal_year', $year);
 
         if ($user->hasRole('member') && !$user->hasAnyRole(['bishop', 'admin', 'treasurer', 'reverend'])) {
-            $query->where('user_id', $user->id);
+            $incomeQuery->where('user_id', $user->id);
+            // Members don't see expenses
+            return [
+                'total_tithes' => (clone $incomeQuery)->where('transaction_type', 'tithe')->sum('amount'),
+                'total_offerings' => (clone $incomeQuery)->where('transaction_type', 'offering')->sum('amount'),
+                'total_special' => (clone $incomeQuery)->where('transaction_type', 'special_offering')->sum('amount'),
+                'total_incomes' => $incomeQuery->sum('amount'),
+                'total_expenses' => 0,
+                'balance' => $incomeQuery->sum('amount'),
+            ];
         }
 
         return [
-            'total_tithes' => (clone $query)->where('transaction_type', 'tithe')->sum('amount'),
-            'total_offerings' => (clone $query)->where('transaction_type', 'offering')->sum('amount'),
-            'total_special' => (clone $query)->where('transaction_type', 'special_offering')->sum('amount'),
-            'total' => $query->sum('amount'),
+            'total_tithes' => (clone $incomeQuery)->where('transaction_type', 'tithe')->sum('amount'),
+            'total_offerings' => (clone $incomeQuery)->where('transaction_type', 'offering')->sum('amount'),
+            'total_special' => (clone $incomeQuery)->where('transaction_type', 'special_offering')->sum('amount'),
+            'total_incomes' => $incomeQuery->sum('amount'),
+            'total_expenses' => $expenseQuery->sum('amount'),
+            'balance' => FinancialTransaction::getBalance($year),
         ];
     }
 
@@ -225,7 +357,8 @@ class FinanceController extends Controller
             return;
         }
 
-        if ($finance->user_id !== $user->id) {
+        // Members can only see their own income transactions
+        if ($finance->isExpense() || $finance->user_id !== $user->id) {
             abort(403, __('app.messages.unauthorized'));
         }
     }

@@ -50,8 +50,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="phone" class="label">{{ __('app.members.phone') }}</label>
-                            <input type="tel" id="phone" name="phone" value="{{ old('phone') }}"
+                            <label for="phone" class="label">{{ __('app.members.phone') }} *</label>
+                            <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" required
                                 class="input @error('phone') input-error @enderror">
                             @error('phone')
                                 <p class="form-error">{{ $message }}</p>
@@ -152,9 +152,27 @@
                 <div class="card">
                     <h3 class="text-lg font-semibold text-primary-700 mb-4">Rattachements</h3>
 
+                    @error('zone_ids')
+                        <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                            <p class="text-red-600 text-sm">{{ $message }}</p>
+                        </div>
+                    @enderror
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="form-group">
-                            <label for="zone_ids" class="label">Zones</label>
+                            <label for="branch_ids" class="label">Branches *</label>
+                            <select id="branch_ids" name="branch_ids[]" multiple class="input" style="height: auto;">
+                                @foreach($branches as $branch)
+                                    <option value="{{ $branch->id }}" {{ in_array($branch->id, old('branch_ids', [])) ? 'selected' : '' }}>
+                                        {{ $branch->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <p class="form-help text-amber-600">Le membre doit appartenir à au moins une branche OU une zone</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="zone_ids" class="label">Zones *</label>
                             <select id="zone_ids" name="zone_ids[]" multiple class="input" style="height: auto;">
                                 @foreach($zones as $zone)
                                     <option value="{{ $zone->id }}" {{ in_array($zone->id, old('zone_ids', [])) ? 'selected' : '' }}>
@@ -176,7 +194,7 @@
                             </select>
                         </div>
 
-                        <div class="form-group md:col-span-2">
+                        <div class="form-group">
                             <label class="label">{{ __('app.nav.departments') }}</label>
                             <select name="department_ids[]" multiple class="input" style="height: auto;">
                                 @foreach($departments as $department)

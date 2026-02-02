@@ -101,10 +101,36 @@ class ZoneController extends Controller
 
     public function destroy(Zone $zone)
     {
+        // Soft delete (archive)
         $zone->delete();
 
         return redirect()->route('zones.index')
-            ->with('success', __('app.messages.deleted', ['item' => __('app.zones.title')]));
+            ->with('success', 'La zone a été archivée avec succès.');
+    }
+
+    public function restore($id)
+    {
+        $zone = Zone::withTrashed()->findOrFail($id);
+        $zone->restore();
+
+        return redirect()->route('zones.index')
+            ->with('success', 'La zone a été restaurée avec succès.');
+    }
+
+    public function archived(Request $request)
+    {
+        $zones = Zone::onlyTrashed()
+            ->with(['branch', 'leader'])
+            ->when($request->search, function ($q, $search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+            ->latest('deleted_at')
+            ->paginate(10)
+            ->withQueryString();
+
+        $branches = Branch::where('is_active', true)->get();
+
+        return view('structures.zones.archived', compact('zones', 'branches'));
     }
 
     protected function authorizeZoneAccess(Zone $zone)

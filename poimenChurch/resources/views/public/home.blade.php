@@ -1,0 +1,1055 @@
+<x-public-layout>
+    <x-slot name="title">Accueil - Poimen Church</x-slot>
+    <x-slot name="metaDescription">Poimen Church - Une communaute de foi, d'amour et de croissance spirituelle. Rejoignez-nous pour vivre une experience spirituelle transformatrice.</x-slot>
+
+    {{-- ============================================
+         HERO CAROUSEL - Spectacular "WOW" Effect
+         ============================================ --}}
+    <section class="relative" x-data="{
+        currentSlide: 0,
+        totalSlides: 3,
+        autoplay: true,
+        interval: 6000,
+        isPaused: false,
+        progress: 0,
+
+        init() {
+            this.startAutoplay();
+        },
+
+        startAutoplay() {
+            setInterval(() => {
+                if (!this.isPaused) {
+                    this.progress += 100 / (this.interval / 100);
+                    if (this.progress >= 100) {
+                        this.next();
+                    }
+                }
+            }, 100);
+        },
+
+        next() {
+            this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
+            this.progress = 0;
+        },
+
+        prev() {
+            this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+            this.progress = 0;
+        },
+
+        goTo(index) {
+            this.currentSlide = index;
+            this.progress = 0;
+        }
+    }" @mouseenter="isPaused = true" @mouseleave="isPaused = false">
+
+        {{-- Slides Container --}}
+        <div class="relative overflow-hidden group">
+            <div class="flex transition-transform duration-1000 ease-out" :style="`transform: translateX(-${currentSlide * 100}%)`">
+
+                {{-- Slide 1 - Welcome --}}
+                <div class="w-full flex-shrink-0 min-h-[calc(100vh-116px)] sm:min-h-[calc(100vh-116px)] relative flex items-center">
+                    {{-- Background --}}
+                    <div class="absolute inset-0">
+                        <img src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=2070&q=80"
+                             alt="" class="w-full h-full object-cover scale-105 animate-slow-zoom">
+                        <div class="absolute inset-0 bg-gradient-to-br from-primary-900/95 via-primary-800/90 to-primary-900/85"></div>
+                        <div class="absolute inset-0 hero-pattern opacity-30"></div>
+                    </div>
+
+                    {{-- Floating Elements --}}
+                    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                        <div class="absolute top-1/4 left-10 w-72 h-72 bg-gold-400/20 rounded-full blur-3xl animate-float"></div>
+                        <div class="absolute bottom-1/4 right-10 w-96 h-96 bg-primary-400/15 rounded-full blur-3xl animate-float-delayed"></div>
+                        <div class="absolute top-1/2 left-1/3 w-48 h-48 bg-white/5 rounded-full blur-2xl animate-pulse"></div>
+                    </div>
+
+                    {{-- Content --}}
+                    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12 sm:py-16 lg:py-20">
+                        <div class="grid lg:grid-cols-2 gap-12 items-center">
+                            {{-- Left Content --}}
+                            <div class="space-y-8" x-show="currentSlide === 0" x-transition:enter="transition ease-out duration-700 delay-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+                                {{-- Badge --}}
+                                <div class="inline-flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
+                                    <span class="relative flex h-2.5 w-2.5">
+                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-gold-400"></span>
+                                    </span>
+                                    <span class="text-white/90 text-sm font-medium">Bienvenue a Poimen Church</span>
+                                </div>
+
+                                {{-- Title --}}
+                                <h1 class="hero-title text-white">
+                                    Une communaute de
+                                    <span class="relative inline-block">
+                                        <span class="text-gradient-gold">foi</span>
+                                        <svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 200 12" fill="none">
+                                            <path d="M2 10C50 2 150 2 198 10" stroke="url(#gold-grad)" stroke-width="3" stroke-linecap="round"/>
+                                            <defs>
+                                                <linearGradient id="gold-grad" x1="0" y1="0" x2="200" y2="0">
+                                                    <stop offset="0%" stop-color="#fbbf24"/>
+                                                    <stop offset="100%" stop-color="#f59e0b"/>
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+                                    </span>
+                                    et d'<span class="text-gold-400">amour</span>
+                                </h1>
+
+                                {{-- Description --}}
+                                <p class="text-xl text-white/70 leading-relaxed max-w-xl">
+                                    Rejoignez-nous chaque dimanche pour vivre une experience spirituelle transformatrice. Ensemble, grandissons dans la grace et l'amour de Christ.
+                                </p>
+
+                                {{-- CTA Buttons --}}
+                                <div class="flex flex-wrap gap-4 pt-4">
+                                    <a href="{{ route('about.vision') }}" class="group inline-flex items-center px-8 py-4 bg-gold-500 hover:bg-gold-400 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg shadow-gold-500/30 hover:shadow-xl hover:shadow-gold-500/40 hover:-translate-y-1">
+                                        <span>Decouvrir notre eglise</span>
+                                        <svg class="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                        </svg>
+                                    </a>
+                                    <a href="{{ route('contact') }}" class="group inline-flex items-center px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-semibold rounded-2xl border border-white/20 transition-all duration-300 hover:-translate-y-1">
+                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        </svg>
+                                        <span>Nous trouver</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            {{-- Right Content - Service Card --}}
+                            <div class="hidden lg:flex justify-end" x-show="currentSlide === 0" x-transition:enter="transition ease-out duration-700 delay-500" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0">
+                                <div class="relative animate-float-slow">
+                                    {{-- Main Card --}}
+                                    <div class="bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl max-w-sm">
+                                        <div class="flex items-center mb-6">
+                                            <div class="w-14 h-14 bg-gold-500/20 rounded-2xl flex items-center justify-center mr-4">
+                                                <svg class="w-7 h-7 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h3 class="text-white font-semibold text-lg">Prochain Culte</h3>
+                                                <p class="text-white/60 text-sm">Ce Dimanche</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="space-y-3">
+                                            <div class="bg-white/5 rounded-2xl p-4 border border-white/10 hover:bg-white/10 transition-colors">
+                                                <div class="flex items-center justify-between">
+                                                    <span class="text-white/80">Culte Principal</span>
+                                                    <span class="text-gold-400 font-bold text-lg">09h00</span>
+                                                </div>
+                                            </div>
+                                            <div class="bg-white/5 rounded-2xl p-4 border border-white/10 hover:bg-white/10 transition-colors">
+                                                <div class="flex items-center justify-between">
+                                                    <span class="text-white/80">Ecole du Dimanche</span>
+                                                    <span class="text-gold-400 font-bold text-lg">08h30</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <a href="{{ route('contact') }}" class="mt-6 w-full inline-flex items-center justify-center px-6 py-3.5 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gold-50 transition-all duration-300 group">
+                                            Planifier ma visite
+                                            <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+
+                                    {{-- Decorative Badge --}}
+                                    <div class="absolute -top-3 -right-3 bg-gradient-to-r from-gold-400 to-gold-500 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg animate-pulse-glow">
+                                        En direct
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Slide 2 - Community --}}
+                <div class="w-full flex-shrink-0 min-h-[calc(100vh-116px)] relative flex items-center">
+                    <div class="absolute inset-0">
+                        <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=2070&q=80"
+                             alt="" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-r from-primary-900/95 via-primary-900/80 to-transparent"></div>
+                    </div>
+
+                    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12 sm:py-16 lg:py-20">
+                        <div class="max-w-2xl" x-show="currentSlide === 1" x-transition:enter="transition ease-out duration-700 delay-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+                            <div class="inline-flex items-center gap-2 px-4 py-2 bg-growth-500/20 backdrop-blur-md rounded-full border border-growth-400/30 mb-6">
+                                <svg class="w-4 h-4 text-growth-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                <span class="text-growth-300 text-sm font-medium">Notre Communaute</span>
+                            </div>
+
+                            <h2 class="hero-title text-white mb-6">
+                                Une famille
+                                <span class="text-growth-400">unie</span>
+                                par la foi
+                            </h2>
+
+                            <p class="text-xl text-white/70 leading-relaxed mb-8">
+                                Depuis plus de 20 ans, nous batissons une communaute ou chacun trouve sa place. Venez comme vous etes, repartez transforme.
+                            </p>
+
+                            <div class="flex flex-wrap gap-4">
+                                <a href="{{ route('about.history') }}" class="inline-flex items-center px-8 py-4 bg-white text-primary-700 font-semibold rounded-2xl transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-xl">
+                                    Notre histoire
+                                    <svg class="w-5 h-5 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Slide 3 - Ministries --}}
+                <div class="w-full flex-shrink-0 min-h-[calc(100vh-116px)] relative flex items-center">
+                    <div class="absolute inset-0">
+                        <img src="https://images.unsplash.com/photo-1519491050926-8cf10c1ea3e1?auto=format&fit=crop&w=2070&q=80"
+                             alt="" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-primary-900/95 via-primary-900/70 to-primary-900/50"></div>
+                    </div>
+
+                    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12 sm:py-16 lg:py-20 text-center">
+                        <div x-show="currentSlide === 2" x-transition:enter="transition ease-out duration-700 delay-300" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100">
+                            <div class="inline-flex items-center gap-2 px-4 py-2 bg-gold-500/20 backdrop-blur-md rounded-full border border-gold-400/30 mb-6">
+                                <svg class="w-4 h-4 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                                </svg>
+                                <span class="text-gold-300 text-sm font-medium">Nos Ministeres</span>
+                            </div>
+
+                            <h2 class="hero-title text-white mb-6 max-w-4xl mx-auto">
+                                Trouvez votre
+                                <span class="text-gold-400">place</span>
+                                parmi nous
+                            </h2>
+
+                            <p class="text-xl text-white/70 leading-relaxed mb-10 max-w-2xl mx-auto">
+                                Jeunesse, enfants, femmes, hommes... Nous avons un ministere adapte a chaque saison de votre vie.
+                            </p>
+
+                            <div class="flex flex-wrap gap-4 justify-center">
+                                <a href="{{ route('ministries.youth') }}" class="inline-flex items-center px-6 py-3 bg-blue-500 text-white font-semibold rounded-xl hover:bg-blue-600 transition-all">
+                                    Jeunesse
+                                </a>
+                                <a href="{{ route('ministries.children') }}" class="inline-flex items-center px-6 py-3 bg-orange-500 text-white font-semibold rounded-xl hover:bg-orange-600 transition-all">
+                                    Enfants
+                                </a>
+                                <a href="{{ route('ministries.women') }}" class="inline-flex items-center px-6 py-3 bg-pink-500 text-white font-semibold rounded-xl hover:bg-pink-600 transition-all">
+                                    Femmes
+                                </a>
+                                <a href="{{ route('ministries.men') }}" class="inline-flex items-center px-6 py-3 bg-slate-600 text-white font-semibold rounded-xl hover:bg-slate-700 transition-all">
+                                    Hommes
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Navigation Arrows --}}
+            <button @click="prev()" class="absolute left-6 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white/20 hover:scale-110">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <button @click="next()" class="absolute right-6 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white/20 hover:scale-110">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+
+            {{-- Dot Indicators --}}
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
+                <template x-for="(_, index) in totalSlides" :key="index">
+                    <button
+                        @click="goTo(index)"
+                        :class="currentSlide === index ? 'w-8 bg-white' : 'w-2.5 bg-white/40 hover:bg-white/60'"
+                        class="h-2.5 rounded-full transition-all duration-300"
+                    ></button>
+                </template>
+            </div>
+
+            {{-- Progress Bar --}}
+            <div class="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
+                <div class="h-full bg-gradient-to-r from-primary-400 to-gold-400 transition-all duration-100" :style="`width: ${progress}%`"></div>
+            </div>
+        </div>
+
+        {{-- Scroll Indicator --}}
+        <div class="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 animate-bounce hidden lg:block">
+            <div class="w-8 h-12 rounded-full border-2 border-white/30 flex items-start justify-center p-2">
+                <div class="w-1.5 h-3 bg-white/60 rounded-full animate-scroll-indicator"></div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ============================================
+         STATS SECTION - Impressive Numbers
+         ============================================ --}}
+    <section class="py-20 bg-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-radial opacity-50"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
+                {{-- Stat 1 --}}
+                <div class="text-center animate-slide-up" data-animate>
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary-100 mb-4">
+                        <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <div class="text-4xl lg:text-5xl font-bold text-gradient counter" data-target="500">0</div>
+                    <div class="text-zinc-500 mt-2">Membres actifs</div>
+                </div>
+
+                {{-- Stat 2 --}}
+                <div class="text-center animate-slide-up" data-animate style="animation-delay: 0.1s">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gold-100 mb-4">
+                        <svg class="w-8 h-8 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div class="text-4xl lg:text-5xl font-bold text-gradient-gold counter" data-target="20">0</div>
+                    <div class="text-zinc-500 mt-2">Annees de foi</div>
+                </div>
+
+                {{-- Stat 3 --}}
+                <div class="text-center animate-slide-up" data-animate style="animation-delay: 0.2s">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-growth-100 mb-4">
+                        <svg class="w-8 h-8 text-growth-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                    </div>
+                    <div class="text-4xl lg:text-5xl font-bold text-gradient counter" data-target="5">0</div>
+                    <div class="text-zinc-500 mt-2">Ministeres</div>
+                </div>
+
+                {{-- Stat 4 --}}
+                <div class="text-center animate-slide-up" data-animate style="animation-delay: 0.3s">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-100 mb-4">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                    </div>
+                    <div class="text-4xl lg:text-5xl font-bold text-gradient counter" data-target="1000">0</div>
+                    <div class="text-zinc-500 mt-2">Vies transformees</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ============================================
+         SERVICE TIMES SECTION
+         ============================================ --}}
+    <section class="py-24 bg-gradient-mesh relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-200 to-transparent"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {{-- Section Header --}}
+            <div class="text-center mb-16 animate-slide-up" data-animate>
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-semibold mb-6">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Rejoignez-nous</span>
+                </div>
+                <h2 class="section-title mb-4">
+                    Horaires des <span class="text-gradient">cultes</span>
+                </h2>
+                <p class="section-subtitle mx-auto">
+                    Nous serions ravis de vous accueillir lors de nos rassemblements. Venez comme vous etes !
+                </p>
+            </div>
+
+            @if($schedules->count() > 0)
+            <div class="grid grid-cols-1 md:grid-cols-{{ min($schedules->count(), 3) }} gap-8 stagger-children" data-animate>
+                @foreach($schedules as $index => $schedule)
+                    @php
+                        $color = $schedule->icon_color ?? 'primary';
+                        $isFirst = $index === 0;
+                        $colorClasses = [
+                            'primary' => ['bg' => 'bg-primary-50', 'icon-bg' => 'bg-primary-100', 'text' => 'text-primary-600', 'gradient' => 'from-primary-500 to-primary-600'],
+                            'gold' => ['bg' => 'bg-gold-50', 'icon-bg' => 'bg-gold-100', 'text' => 'text-gold-600', 'gradient' => 'from-gold-400 to-gold-500'],
+                            'blue' => ['bg' => 'bg-blue-50', 'icon-bg' => 'bg-blue-100', 'text' => 'text-blue-600', 'gradient' => 'from-blue-500 to-blue-600'],
+                            'purple' => ['bg' => 'bg-purple-50', 'icon-bg' => 'bg-purple-100', 'text' => 'text-purple-600', 'gradient' => 'from-purple-500 to-purple-600'],
+                        ];
+                        $colorClass = $colorClasses[$color] ?? $colorClasses['primary'];
+                    @endphp
+
+                    @if($isFirst)
+                    <div class="group relative card-hover-lift">
+                        <div class="absolute inset-0 bg-gradient-to-br {{ $colorClass['gradient'] }} rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
+                        <div class="relative bg-gradient-to-br {{ $colorClass['gradient'] }} rounded-3xl p-8 text-white overflow-hidden shadow-2xl">
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
+
+                            <div class="relative">
+                                <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                    @include('components.schedule-icon', ['icon' => $schedule->icon, 'class' => 'w-8 h-8'])
+                                </div>
+                                <h3 class="text-2xl font-bold mb-3">{{ $schedule->title }}</h3>
+                                @if($schedule->description)
+                                <p class="text-white/80 mb-6 leading-relaxed">{{ $schedule->description }}</p>
+                                @endif
+                                <div class="flex items-center bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10">
+                                    <svg class="w-5 h-5 mr-3 text-gold-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <span class="text-lg font-semibold">{{ $schedule->display_time }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @else
+                    <div class="group relative card-hover-lift">
+                        <div class="relative bg-white rounded-3xl p-8 border border-zinc-100 shadow-lg overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 {{ $colorClass['bg'] }} rounded-full -translate-y-1/2 translate-x-1/2 opacity-50 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                            <div class="relative">
+                                <div class="w-16 h-16 {{ $colorClass['icon-bg'] }} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                    @include('components.schedule-icon', ['icon' => $schedule->icon, 'class' => 'w-8 h-8 ' . $colorClass['text']])
+                                </div>
+                                <h3 class="text-2xl font-bold text-zinc-900 mb-3">{{ $schedule->title }}</h3>
+                                @if($schedule->description)
+                                <p class="text-zinc-600 mb-6 leading-relaxed">{{ $schedule->description }}</p>
+                                @endif
+                                <div class="flex items-center {{ $colorClass['bg'] }} rounded-xl px-4 py-3">
+                                    <svg class="w-5 h-5 mr-3 {{ $colorClass['text'] }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <span class="text-lg font-semibold {{ $colorClass['text'] }}">{{ $schedule->display_time }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                @endforeach
+            </div>
+            @else
+            <div class="text-center py-16 bg-white rounded-3xl border border-zinc-100 shadow-sm">
+                <svg class="w-16 h-16 text-zinc-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <p class="text-zinc-500 text-lg">Les horaires seront bientot disponibles.</p>
+            </div>
+            @endif
+        </div>
+    </section>
+
+    {{-- ============================================
+         ABOUT SECTION - Split Layout
+         ============================================ --}}
+    <section class="py-24 bg-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                {{-- Image Side --}}
+                <div class="relative animate-slide-up" data-animate>
+                    <div class="relative">
+                        <div class="relative rounded-3xl overflow-hidden shadow-2xl">
+                            <div class="absolute inset-0 bg-gradient-to-t from-primary-900/50 to-transparent z-10"></div>
+                            <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1470&q=80"
+                                 alt="Communaute Poimen Church"
+                                 class="w-full h-[500px] object-cover hover:scale-105 transition-transform duration-700">
+                        </div>
+
+                        {{-- Floating Stats Card --}}
+                        <div class="absolute -bottom-6 -right-6 bg-white rounded-2xl shadow-2xl p-6 z-20 card-hover-glow">
+                            <div class="flex items-center gap-4">
+                                <div class="w-14 h-14 bg-gradient-to-br from-gold-400 to-gold-500 rounded-xl flex items-center justify-center shadow-lg shadow-gold-500/30">
+                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-3xl font-bold text-zinc-900">500+</p>
+                                    <p class="text-sm text-zinc-500">Membres actifs</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Experience Badge --}}
+                        <div class="absolute -top-4 -left-4 bg-primary-600 text-white rounded-2xl px-5 py-3 shadow-xl z-20">
+                            <span class="text-2xl font-bold">20+</span>
+                            <span class="text-sm block text-primary-200">ans d'experience</span>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Content Side --}}
+                <div class="animate-slide-up" data-animate>
+                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-semibold mb-6">
+                        <span class="w-2 h-2 bg-primary-500 rounded-full"></span>
+                        <span>A propos de nous</span>
+                    </div>
+
+                    <h2 class="section-title mb-6">
+                        Une eglise au service de la <span class="text-gradient">communaute</span>
+                    </h2>
+
+                    <p class="text-zinc-600 text-lg leading-relaxed mb-8">
+                        Depuis plus de 20 ans, Poimen Church est un lieu de refuge, de guerison et de transformation. Notre mission est simple : faire connaitre l'amour de Christ a tous et equiper chaque croyant pour accomplir son appel.
+                    </p>
+
+                    {{-- Features Grid --}}
+                    <div class="grid grid-cols-2 gap-6 mb-10">
+                        <div class="flex items-start gap-4 group">
+                            <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-primary-200 transition-colors">
+                                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-zinc-900">Accueil chaleureux</h4>
+                                <p class="text-sm text-zinc-500">Venez comme vous etes</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 group">
+                            <div class="w-12 h-12 bg-gold-100 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-gold-200 transition-colors">
+                                <svg class="w-6 h-6 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-zinc-900">Enseignement solide</h4>
+                                <p class="text-sm text-zinc-500">Base sur la Bible</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 group">
+                            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-blue-200 transition-colors">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-zinc-900">Louange vibrante</h4>
+                                <p class="text-sm text-zinc-500">Adoration authentique</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 group">
+                            <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-purple-200 transition-colors">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-zinc-900">Communaute unie</h4>
+                                <p class="text-sm text-zinc-500">Famille spirituelle</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{{ route('about.history') }}" class="group inline-flex items-center px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-primary-500/25 hover:-translate-y-1">
+                        En savoir plus
+                        <svg class="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ============================================
+         MINISTRIES SECTION
+         ============================================ --}}
+    <section class="py-24 bg-zinc-50 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-radial opacity-30"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {{-- Section Header --}}
+            <div class="text-center mb-16 animate-slide-up" data-animate>
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-gold-100 text-gold-700 rounded-full text-sm font-semibold mb-6">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                    </svg>
+                    <span>Nos ministeres</span>
+                </div>
+                <h2 class="section-title mb-4">
+                    Trouvez votre <span class="text-gradient">place</span>
+                </h2>
+                <p class="section-subtitle mx-auto">
+                    Nous avons des ministeres adaptes a chaque age et chaque saison de la vie.
+                </p>
+            </div>
+
+            {{-- Ministry Cards --}}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children" data-animate>
+                <a href="{{ route('ministries.youth') }}" class="group relative card-hover-lift">
+                    <div class="relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl p-8 text-white overflow-hidden h-full min-h-[280px]">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                        <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-white/10 rounded-full"></div>
+                        <div class="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+
+                        <div class="relative h-full flex flex-col">
+                            <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Jeunesse</h3>
+                            <p class="text-white/80 text-sm mb-auto">13 - 25 ans</p>
+                            <span class="inline-flex items-center text-sm font-medium mt-4 group-hover:translate-x-2 transition-transform duration-300">
+                                Decouvrir
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="{{ route('ministries.children') }}" class="group relative card-hover-lift">
+                    <div class="relative bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl p-8 text-white overflow-hidden h-full min-h-[280px]">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                        <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-white/10 rounded-full"></div>
+
+                        <div class="relative h-full flex flex-col">
+                            <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Enfants</h3>
+                            <p class="text-white/80 text-sm mb-auto">0 - 12 ans</p>
+                            <span class="inline-flex items-center text-sm font-medium mt-4 group-hover:translate-x-2 transition-transform duration-300">
+                                Decouvrir
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="{{ route('ministries.women') }}" class="group relative card-hover-lift">
+                    <div class="relative bg-gradient-to-br from-pink-500 to-pink-600 rounded-3xl p-8 text-white overflow-hidden h-full min-h-[280px]">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                        <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-white/10 rounded-full"></div>
+
+                        <div class="relative h-full flex flex-col">
+                            <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Femmes</h3>
+                            <p class="text-white/80 text-sm mb-auto">Ministere feminin</p>
+                            <span class="inline-flex items-center text-sm font-medium mt-4 group-hover:translate-x-2 transition-transform duration-300">
+                                Decouvrir
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="{{ route('ministries.men') }}" class="group relative card-hover-lift">
+                    <div class="relative bg-gradient-to-br from-slate-600 to-slate-700 rounded-3xl p-8 text-white overflow-hidden h-full min-h-[280px]">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                        <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-white/10 rounded-full"></div>
+
+                        <div class="relative h-full flex flex-col">
+                            <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Hommes</h3>
+                            <p class="text-white/80 text-sm mb-auto">Ministere masculin</p>
+                            <span class="inline-flex items-center text-sm font-medium mt-4 group-hover:translate-x-2 transition-transform duration-300">
+                                Decouvrir
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    {{-- ============================================
+         TESTIMONIALS SECTION - Horizontal Scroll Carousel
+         ============================================ --}}
+    @if($testimonials->count() > 0)
+    <section class="py-24 bg-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-radial opacity-30"></div>
+
+        <div class="relative">
+            {{-- Section Header --}}
+            <div class="text-center mb-12 px-4 sm:px-6 lg:px-8 animate-slide-up" data-animate>
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-semibold mb-6">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    </svg>
+                    <span>Temoignages</span>
+                </div>
+                <h2 class="section-title mb-4">
+                    Ce que notre <span class="text-gradient">communaute</span> dit
+                </h2>
+                <p class="section-subtitle mx-auto">
+                    Decouvrez les histoires inspirantes de ceux qui ont ete touches par la grace de Dieu dans notre eglise.
+                </p>
+            </div>
+
+            {{-- Horizontal Scrolling Carousel --}}
+            <div class="relative group/carousel" x-data="{
+                scrollContainer: null,
+                canScrollLeft: false,
+                canScrollRight: true,
+
+                init() {
+                    this.scrollContainer = this.$refs.scrollContainer;
+                    this.checkScroll();
+                    this.scrollContainer.addEventListener('scroll', () => this.checkScroll());
+                },
+
+                checkScroll() {
+                    this.canScrollLeft = this.scrollContainer.scrollLeft > 0;
+                    this.canScrollRight = this.scrollContainer.scrollLeft < (this.scrollContainer.scrollWidth - this.scrollContainer.clientWidth - 10);
+                },
+
+                scrollLeft() {
+                    this.scrollContainer.scrollBy({ left: -400, behavior: 'smooth' });
+                },
+
+                scrollRight() {
+                    this.scrollContainer.scrollBy({ left: 400, behavior: 'smooth' });
+                }
+            }">
+                {{-- Navigation Arrows --}}
+                <button @click="scrollLeft()"
+                        x-show="canScrollLeft"
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 -translate-x-4"
+                        x-transition:enter-end="opacity-100 translate-x-0"
+                        class="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center text-gray-600 hover:text-primary-600 hover:border-primary-200 transition-all duration-300 opacity-0 group-hover/carousel:opacity-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+
+                <button @click="scrollRight()"
+                        x-show="canScrollRight"
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 translate-x-4"
+                        x-transition:enter-end="opacity-100 translate-x-0"
+                        class="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center text-gray-600 hover:text-primary-600 hover:border-primary-200 transition-all duration-300 opacity-0 group-hover/carousel:opacity-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+
+                {{-- Scrollable Container --}}
+                <div x-ref="scrollContainer"
+                     class="flex gap-6 overflow-x-auto pb-4 px-4 sm:px-6 lg:px-8 scroll-smooth scrollbar-hide"
+                     style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
+
+                    {{-- Left Spacer for centering --}}
+                    <div class="flex-shrink-0 w-[calc((100vw-1280px)/2)] hidden xl:block"></div>
+
+                    @foreach($testimonials as $testimonial)
+                    <a href="{{ route('testimonials.show', $testimonial) }}"
+                       class="group flex-shrink-0 w-[320px] sm:w-[380px] bg-white rounded-3xl border border-gray-100 shadow-lg hover:shadow-2xl p-8 transition-all duration-300 hover:-translate-y-2 relative overflow-hidden cursor-pointer"
+                       style="scroll-snap-align: start;">
+
+                        {{-- Quote Icon --}}
+                        <div class="absolute top-6 right-6 text-primary-100 group-hover:text-primary-200 transition-colors">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                            </svg>
+                        </div>
+
+                        {{-- Rating --}}
+                        <div class="flex items-center gap-1 mb-4">
+                            @for($i = 1; $i <= 5; $i++)
+                            <svg class="w-5 h-5 {{ $i <= $testimonial->rating ? 'text-gold-400' : 'text-gray-200' }}" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            @endfor
+                        </div>
+
+                        {{-- Content --}}
+                        <p class="text-gray-600 leading-relaxed mb-6 line-clamp-4">
+                            "{{ $testimonial->short_content }}"
+                        </p>
+
+                        {{-- Author --}}
+                        <div class="flex items-center gap-4 pt-4 border-t border-gray-100">
+                            <img src="{{ $testimonial->photo_url }}" alt="{{ $testimonial->author_name }}"
+                                 class="w-12 h-12 rounded-xl object-cover border-2 border-gray-100 group-hover:border-primary-200 transition-colors">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors truncate">{{ $testimonial->author_name }}</h4>
+                                @if($testimonial->author_role)
+                                <p class="text-sm text-gray-500 truncate">{{ $testimonial->author_role }}</p>
+                                @endif
+                            </div>
+                            {{-- Arrow indicator --}}
+                            <div class="w-8 h-8 bg-primary-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                                <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+                    @endforeach
+
+                    {{-- Right Spacer --}}
+                    <div class="flex-shrink-0 w-[calc((100vw-1280px)/2)] hidden xl:block"></div>
+                </div>
+
+                {{-- Scroll Indicator --}}
+                <div class="flex justify-center items-center gap-4 mt-8 px-4">
+                    <span class="text-sm text-gray-400">Faites defiler pour voir plus</span>
+                    <svg class="w-5 h-5 text-gray-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </div>
+
+                {{-- View All Link --}}
+                <div class="text-center mt-8">
+                    <a href="{{ route('testimonials') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                        Voir tous les temoignages
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    @endif
+
+    {{-- ============================================
+         CTA SECTION - Immersive
+         ============================================ --}}
+    <section class="py-32 relative overflow-hidden">
+        {{-- Background --}}
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-800 via-primary-700 to-primary-900"></div>
+        <div class="absolute inset-0 hero-pattern opacity-10"></div>
+
+        {{-- Floating Elements --}}
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-gold-500/20 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-primary-400/20 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl"></div>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="animate-slide-up" data-animate>
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md text-white rounded-full text-sm font-semibold mb-8 border border-white/20">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                    <span>Rejoignez-nous</span>
+                </div>
+
+                <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                    Pret a faire le <br class="hidden sm:block">premier pas ?
+                </h2>
+
+                <p class="text-xl text-white/70 max-w-2xl mx-auto mb-12">
+                    Nous serions honores de vous accueillir ce dimanche. Une nouvelle aventure spirituelle vous attend.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{{ route('contact') }}" class="group inline-flex items-center justify-center px-10 py-5 bg-white text-primary-700 font-semibold rounded-2xl transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+                        Planifier votre visite
+                        <svg class="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                    <a href="{{ route('give') }}" class="group inline-flex items-center justify-center px-10 py-5 bg-gold-500 hover:bg-gold-400 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg shadow-gold-500/30 hover:-translate-y-1">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                        Soutenir notre mission
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ============================================
+         LOCATION SECTION
+         ============================================ --}}
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                {{-- Map --}}
+                <div class="relative animate-slide-up" data-animate>
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl h-[450px]">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3972.3370968659043!2d-3.9911!3d5.3167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwMTknMDAuMSJOIDPCsDU5JzI4LjAiVw!5e0!3m2!1sfr!2sci!4v1234567890"
+                            class="w-full h-full" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+
+                    <div class="absolute -bottom-4 left-8 bg-primary-600 text-white rounded-2xl px-6 py-4 shadow-xl flex items-center gap-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            </svg>
+                        </div>
+                        <span class="font-medium">Cocody, Abidjan</span>
+                    </div>
+                </div>
+
+                {{-- Contact Info --}}
+                <div class="animate-slide-up" data-animate>
+                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-semibold mb-6">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        </svg>
+                        <span>Nous trouver</span>
+                    </div>
+
+                    <h2 class="section-title mb-6">
+                        Venez nous <span class="text-gradient">rendre visite</span>
+                    </h2>
+
+                    <p class="text-zinc-600 text-lg leading-relaxed mb-10">
+                        Nous sommes situes au coeur d'Abidjan, facilement accessibles. N'hesitez pas a nous contacter pour toute question.
+                    </p>
+
+                    {{-- Contact Cards --}}
+                    <div class="space-y-4">
+                        <div class="group bg-zinc-50 hover:bg-white rounded-2xl p-5 flex items-center gap-5 transition-all duration-300 hover:shadow-lg border border-transparent hover:border-zinc-100">
+                            <div class="w-14 h-14 bg-primary-100 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-primary-200 transition-colors">
+                                <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-zinc-900 mb-1">Adresse</h4>
+                                <p class="text-zinc-600">123 Rue de l'Eglise, Cocody, Abidjan</p>
+                            </div>
+                        </div>
+
+                        <div class="group bg-zinc-50 hover:bg-white rounded-2xl p-5 flex items-center gap-5 transition-all duration-300 hover:shadow-lg border border-transparent hover:border-zinc-100">
+                            <div class="w-14 h-14 bg-gold-100 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-gold-200 transition-colors">
+                                <svg class="w-6 h-6 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-zinc-900 mb-1">Telephone</h4>
+                                <a href="tel:+22500000000" class="text-primary-600 hover:text-primary-700 font-medium">+225 00 00 00 00</a>
+                            </div>
+                        </div>
+
+                        <div class="group bg-zinc-50 hover:bg-white rounded-2xl p-5 flex items-center gap-5 transition-all duration-300 hover:shadow-lg border border-transparent hover:border-zinc-100">
+                            <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-blue-200 transition-colors">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-zinc-900 mb-1">Email</h4>
+                                <a href="mailto:contact@poimenchurch.org" class="text-primary-600 hover:text-primary-700 font-medium">contact@poimenchurch.org</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{{ route('contact') }}" class="group inline-flex items-center mt-10 px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-primary-500/25 hover:-translate-y-1">
+                        Nous contacter
+                        <svg class="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Intersection Observer for animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('[data-animate]').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Counter animation
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+                let started = false;
+
+                const updateCounter = () => {
+                    current += step;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target + '+';
+                    }
+                };
+
+                const counterObserver = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting && !started) {
+                        started = true;
+                        updateCounter();
+                        counterObserver.disconnect();
+                    }
+                }, { threshold: 0.5 });
+
+                counterObserver.observe(counter);
+            });
+
+            // Navbar scroll effect
+            const navbar = document.getElementById('main-navbar');
+            const mainNav = document.getElementById('main-nav');
+
+            if (mainNav) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 100) {
+                        mainNav.classList.add('scrolled');
+                    } else {
+                        mainNav.classList.remove('scrolled');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <style>
+        @keyframes slow-zoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .animate-slow-zoom {
+            animation: slow-zoom 20s ease-out forwards;
+        }
+    </style>
+    @endpush
+</x-public-layout>
