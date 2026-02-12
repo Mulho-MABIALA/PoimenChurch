@@ -143,31 +143,21 @@
                     <div class="bg-white rounded-2xl shadow-lg p-8">
                         <h2 class="text-2xl font-bold text-primary-800 mb-6">Horaires des cultes</h2>
 
+                        @if($schedules->count() > 0)
                         <div class="space-y-4">
-                            <div class="flex justify-between items-center pb-4 border-b border-gray-100">
+                            @foreach($schedules as $index => $schedule)
+                            <div class="flex justify-between items-center {{ !$loop->last ? 'pb-4 border-b border-gray-100' : '' }}">
                                 <div>
-                                    <h3 class="font-semibold text-gray-900">Culte du Dimanche</h3>
-                                    <p class="text-sm text-gray-500">Service principal</p>
+                                    <h3 class="font-semibold text-gray-900">{{ $schedule->title }}</h3>
+                                    <p class="text-sm text-gray-500">{{ $schedule->day_label }}{{ $schedule->description ? ' - ' . $schedule->description : '' }}</p>
                                 </div>
-                                <span class="bg-primary-100 text-primary-800 px-4 py-2 rounded-full font-medium">09h00</span>
+                                <span class="bg-primary-100 text-primary-800 px-4 py-2 rounded-full font-medium">{{ $schedule->formatted_time }}</span>
                             </div>
-
-                            <div class="flex justify-between items-center pb-4 border-b border-gray-100">
-                                <div>
-                                    <h3 class="font-semibold text-gray-900">Etude Biblique</h3>
-                                    <p class="text-sm text-gray-500">Mercredi soir</p>
-                                </div>
-                                <span class="bg-primary-100 text-primary-800 px-4 py-2 rounded-full font-medium">18h00</span>
-                            </div>
-
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <h3 class="font-semibold text-gray-900">Priere Matinale</h3>
-                                    <p class="text-sm text-gray-500">Vendredi matin</p>
-                                </div>
-                                <span class="bg-primary-100 text-primary-800 px-4 py-2 rounded-full font-medium">05h30</span>
-                            </div>
+                            @endforeach
                         </div>
+                        @else
+                        <p class="text-gray-500 text-center py-4">Les horaires seront bientot disponibles.</p>
+                        @endif
                     </div>
                 </div>
             </div>

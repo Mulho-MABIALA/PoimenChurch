@@ -849,6 +849,101 @@
     @endif
 
     {{-- ============================================
+         UPCOMING EVENTS SECTION
+         ============================================ --}}
+    @if($upcomingEvents->count() > 0)
+    <section class="py-16 sm:py-20 lg:py-24 bg-zinc-50 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {{-- Section Header --}}
+            <div class="text-center mb-10 sm:mb-16 animate-slide-up" data-animate>
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-gold-100 text-gold-700 rounded-full text-sm font-semibold mb-6">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span>Evenements</span>
+                </div>
+                <h2 class="section-title mb-4">
+                    Evenements <span class="text-gradient">a venir</span>
+                </h2>
+                <p class="section-subtitle mx-auto">
+                    Retrouvez nos prochains evenements et activites. Rejoignez-nous !
+                </p>
+            </div>
+
+            {{-- Events Grid --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 stagger-children" data-animate>
+                @foreach($upcomingEvents as $event)
+                <a href="{{ route('events.show', $event->slug) }}" class="group relative card-hover-lift">
+                    <div class="relative bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-zinc-100">
+                        {{-- Event Image --}}
+                        <div class="relative h-48 sm:h-56 overflow-hidden">
+                            @if($event->image)
+                                <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->title }}"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            @else
+                                <div class="w-full h-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
+                                    <svg class="w-16 h-16 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                            @endif
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+
+                            {{-- Date Badge --}}
+                            <div class="absolute top-4 left-4 bg-white rounded-xl px-3 py-2 shadow-lg text-center">
+                                <span class="block text-2xl font-bold text-primary-700 leading-none">{{ $event->start_date->format('d') }}</span>
+                                <span class="block text-xs font-medium text-zinc-500 uppercase">{{ $event->start_date->translatedFormat('M') }}</span>
+                            </div>
+
+                            {{-- Type Badge --}}
+                            <div class="absolute top-4 right-4 bg-primary-600/90 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                                {{ ucfirst($event->type) }}
+                            </div>
+                        </div>
+
+                        {{-- Content --}}
+                        <div class="p-5 sm:p-6">
+                            <h3 class="text-lg font-bold text-zinc-900 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">{{ $event->title }}</h3>
+                            @if($event->description)
+                            <p class="text-zinc-600 text-sm leading-relaxed mb-4 line-clamp-2">{{ $event->description }}</p>
+                            @endif
+
+                            <div class="flex items-center gap-4 text-sm text-zinc-500">
+                                <div class="flex items-center gap-1.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <span>{{ $event->start_date->format('H\hi') }}</span>
+                                </div>
+                                @if($event->location)
+                                <div class="flex items-center gap-1.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    </svg>
+                                    <span class="truncate">{{ $event->location }}</span>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+
+            {{-- View All Events Link --}}
+            <div class="text-center mt-10 sm:mt-12">
+                <a href="{{ route('events') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                    Voir tous les evenements
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+    @endif
+
+    {{-- ============================================
          CTA SECTION - Immersive
          ============================================ --}}
     <section class="py-16 sm:py-24 lg:py-32 relative overflow-hidden">

@@ -17,8 +17,9 @@ class PublicController extends Controller
     {
         $schedules = Schedule::active()->featured()->ordered()->get();
         $testimonials = Testimonial::active()->featured()->ordered()->take(6)->get();
+        $upcomingEvents = Event::published()->upcoming()->orderByDate('asc')->take(3)->get();
 
-        return view('public.home', compact('schedules', 'testimonials'));
+        return view('public.home', compact('schedules', 'testimonials', 'upcomingEvents'));
     }
 
     /**
@@ -206,7 +207,9 @@ class PublicController extends Controller
      */
     public function contact(): View
     {
-        return view('public.contact');
+        $schedules = Schedule::active()->ordered()->get();
+
+        return view('public.contact', compact('schedules'));
     }
 
     /**
