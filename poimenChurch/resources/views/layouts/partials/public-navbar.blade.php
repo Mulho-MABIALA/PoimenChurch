@@ -13,11 +13,11 @@ class="fixed top-0 left-0 right-0 z-50">
             <div class="flex items-center justify-between h-10">
                 {{-- Left --}}
                 <div class="hidden md:flex items-center gap-6">
-                    <a href="tel:+22500000000" class="flex items-center gap-2 hover:text-gold-400 transition-colors">
+                    <a href="tel:+221774663834" class="flex items-center gap-2 hover:text-gold-400 transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                         </svg>
-                        <span>+225 00 00 00 00</span>
+                        <span>+221 77 466 38 34</span>
                     </a>
                     <a href="mailto:contact@poimenchurch.org" class="flex items-center gap-2 hover:text-gold-400 transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,12 +61,7 @@ class="fixed top-0 left-0 right-0 z-50">
                 {{-- Logo --}}
                 <a href="{{ route('home') }}" class="flex items-center gap-3 group">
                     <div class="relative">
-                        <div class="w-11 h-11 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30 group-hover:shadow-primary-500/50 transition-all duration-300 group-hover:scale-105">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                            </svg>
-                        </div>
-                        <span class="absolute -top-1 -right-1 w-3 h-3 bg-gold-500 rounded-full border-2 border-white"></span>
+                        <img src="{{ asset('Logo.png') }}" alt="Poimen Church" class="w-11 h-11 rounded-xl object-cover shadow-lg shadow-primary-500/30 group-hover:shadow-primary-500/50 transition-all duration-300 group-hover:scale-105">
                     </div>
                     <div class="hidden sm:block">
                         <span class="block text-lg font-bold text-gray-900 leading-none">Poimen</span>
@@ -360,8 +355,8 @@ class="fixed top-0 left-0 right-0 z-50">
     </div>
 </header>
 
-{{-- Spacer - Matches navbar height when scrolled/not scrolled --}}
-<div class="h-[104px] sm:h-[116px]"></div>
+{{-- Spacer - Matches navbar height (mobile has no top bar) --}}
+<div class="h-[64px] md:h-[104px] lg:h-[116px]"></div>
 
 <style>
 [x-cloak] { display: none !important; }

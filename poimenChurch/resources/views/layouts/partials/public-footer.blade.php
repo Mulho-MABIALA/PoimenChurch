@@ -41,11 +41,7 @@
             <!-- Brand Column -->
             <div class="lg:col-span-4">
                 <div class="flex items-center space-x-3 mb-6">
-                    <div class="w-14 h-14 bg-gradient-to-br from-gold-400 to-gold-600 rounded-2xl flex items-center justify-center shadow-lg shadow-gold-500/30">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                        </svg>
-                    </div>
+                    <img src="{{ asset('Logo.png') }}" alt="Poimen Church" class="w-14 h-14 rounded-2xl object-cover shadow-lg shadow-gold-500/30">
                     <div>
                         <span class="text-2xl font-bold text-white">Poimen Church</span>
                         <p class="text-xs text-gold-400 font-medium tracking-wider">COMMUNAUTE DE FOI</p>
@@ -183,7 +179,7 @@
                         </div>
                         <div>
                             <h4 class="text-sm font-semibold text-white mb-1">Adresse</h4>
-                            <p class="text-white/60 text-sm">123 Rue de l'Eglise, Cocody<br>Abidjan, Cote d'Ivoire</p>
+                            <p class="text-white/60 text-sm">Rue GY-113,132</p>
                         </div>
                     </div>
 
@@ -195,7 +191,7 @@
                         </div>
                         <div>
                             <h4 class="text-sm font-semibold text-white mb-1">Telephone</h4>
-                            <a href="tel:+22500000000" class="text-white/60 hover:text-gold-400 transition-colors text-sm">+225 00 00 00 00</a>
+                            <a href="tel:+221774663834" class="text-white/60 hover:text-gold-400 transition-colors text-sm">+221 77 466 38 34</a>
                         </div>
                     </div>
 
