@@ -110,20 +110,16 @@
                             <h3 class="text-xl font-bold text-primary-800">Mobile Money</h3>
                         </div>
                         <p class="text-gray-600 mb-6">
-                            Envoyez votre don via M-Pesa, Airtel Money ou Orange Money.
+                            Envoyez votre don via Orange Money ou Wave.
                         </p>
                         <div class="space-y-3 text-sm">
                             <div class="flex justify-between p-3 bg-white rounded-lg">
-                                <span class="font-medium text-gray-700">M-Pesa</span>
-                                <span class="text-primary-700 font-semibold">+243 XXX XXX XXX</span>
-                            </div>
-                            <div class="flex justify-between p-3 bg-white rounded-lg">
-                                <span class="font-medium text-gray-700">Airtel Money</span>
-                                <span class="text-primary-700 font-semibold">+243 XXX XXX XXX</span>
-                            </div>
-                            <div class="flex justify-between p-3 bg-white rounded-lg">
                                 <span class="font-medium text-gray-700">Orange Money</span>
-                                <span class="text-primary-700 font-semibold">+243 XXX XXX XXX</span>
+                                <span class="text-primary-700 font-semibold">+221 77 466 38 34</span>
+                            </div>
+                            <div class="flex justify-between p-3 bg-white rounded-lg">
+                                <span class="font-medium text-gray-700">Wave</span>
+                                <span class="text-primary-700 font-semibold">+221 77 466 38 34</span>
                             </div>
                         </div>
                     </div>
@@ -174,8 +170,8 @@
                         <div class="p-4 bg-white rounded-lg">
                             <p class="text-sm text-gray-600">
                                 <strong class="text-gray-800">Adresse:</strong><br>
-                                123 Avenue de l'Eglise<br>
-                                Kinshasa, RD Congo
+                                Rue GY-113,132<br>
+                                Dakar, Senegal
                             </p>
                         </div>
                     </div>

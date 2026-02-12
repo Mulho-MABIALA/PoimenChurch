@@ -108,7 +108,7 @@
                                 </div>
                                 <div>
                                     <h3 class="font-semibold text-gray-900">Adresse</h3>
-                                    <p class="text-gray-600 mt-1">123 Avenue de l'Eglise<br>Kinshasa, RD Congo</p>
+                                    <p class="text-gray-600 mt-1">Rue GY-113,132</p>
                                 </div>
                             </div>
 
@@ -120,8 +120,7 @@
                                 </div>
                                 <div>
                                     <h3 class="font-semibold text-gray-900">Telephone</h3>
-                                    <p class="text-gray-600 mt-1">+243 123 456 789</p>
-                                    <p class="text-gray-600">+243 987 654 321</p>
+                                    <p class="text-gray-600 mt-1">+221 77 466 38 34</p>
                                 </div>
                             </div>
 
@@ -185,7 +184,7 @@
 
             <div class="rounded-2xl overflow-hidden shadow-lg h-96">
                 <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d254836.75867012973!2d15.180802815625!3d-4.441931399999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1a6a3129d9cf5a7d%3A0xd5c1ca610c8afd4c!2sKinshasa%2C%20Democratic%20Republic%20of%20the%20Congo!5e0!3m2!1sen!2s!4v1699000000000!5m2!1sen!2s"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55251.37609537865!2d-17.49029585!3d14.716677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xec10d0bdeba9b1d%3A0x7e66b6c12d8e4f25!2sDakar%2C%20Senegal!5e0!3m2!1sfr!2s!4v1699000000000!5m2!1sfr!2s"
                     width="100%"
                     height="100%"
                     style="border:0;"
