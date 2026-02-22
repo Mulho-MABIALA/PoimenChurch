@@ -14,6 +14,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\ZoneController;
 use Illuminate\Support\Facades\Route;
@@ -178,4 +179,13 @@ Route::middleware(['auth', \App\Http\Middleware\SetLocale::class])->group(functi
         Route::patch('/{testimonial}/toggle-featured', [TestimonialController::class, 'toggleFeatured'])->name('toggle-featured');
     });
     Route::resource('admin/testimonials', TestimonialController::class)->names('admin.testimonials');
+
+    // Contact Messages (Admin)
+    Route::prefix('admin/contact-messages')->name('admin.contact-messages.')->group(function () {
+        Route::patch('/{contactMessage}/status', [ContactMessageController::class, 'updateStatus'])->name('update-status');
+        Route::patch('/{contactMessage}/notes', [ContactMessageController::class, 'updateNotes'])->name('update-notes');
+    });
+    Route::resource('admin/contact-messages', ContactMessageController::class)
+        ->names('admin.contact-messages')
+        ->only(['index', 'show', 'destroy']);
 });

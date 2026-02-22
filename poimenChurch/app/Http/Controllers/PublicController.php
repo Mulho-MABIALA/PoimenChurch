@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactMessage;
 use App\Models\Event;
 use App\Models\Schedule;
 use App\Models\Testimonial;
@@ -225,7 +226,7 @@ class PublicController extends Controller
             'message' => 'required|string|max:5000',
         ]);
 
-        // TODO: Send email notification or store in database
+        ContactMessage::create($validated);
 
         return back()->with('success', 'Votre message a ete envoye avec succes. Nous vous repondrons dans les plus brefs delais.');
     }

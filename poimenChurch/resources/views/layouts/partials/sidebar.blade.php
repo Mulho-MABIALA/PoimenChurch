@@ -225,6 +225,23 @@
             </span>
             <span class="nav-text">Temoignages</span>
         </a>
+
+        @php $newContactCount = \App\Models\ContactMessage::nouveau()->count(); @endphp
+        <a href="{{ route('admin.contact-messages.index') }}"
+           class="nav-link {{ request()->routeIs('admin.contact-messages.*') ? 'nav-link-active' : '' }}"
+           {{ request()->routeIs('admin.contact-messages.*') ? 'aria-current=page' : '' }}>
+            <span class="nav-icon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+            </span>
+            <span class="nav-text">Messages de Contact</span>
+            @if($newContactCount > 0)
+                <span class="ml-auto flex-shrink-0 inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1.5 text-[10px] font-bold bg-blue-500 text-white rounded-full">
+                    {{ $newContactCount > 99 ? '99+' : $newContactCount }}
+                </span>
+            @endif
+        </a>
     </nav>
 
     <!-- User Info - Premium Design -->
