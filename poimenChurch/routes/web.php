@@ -15,6 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ContactMessageController;
+use App\Http\Controllers\LeadershipMemberController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\ZoneController;
 use Illuminate\Support\Facades\Route;
@@ -188,4 +189,12 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('admin/contact-messages', ContactMessageController::class)
         ->names('admin.contact-messages')
         ->only(['index', 'show', 'destroy']);
+
+    // Leadership (Admin)
+    Route::prefix('admin/leadership')->name('admin.leadership.')->group(function () {
+        Route::patch('/{leadership}/toggle-active', [LeadershipMemberController::class, 'toggleActive'])->name('toggle-active');
+    });
+    Route::resource('admin/leadership', LeadershipMemberController::class)
+        ->names('admin.leadership')
+        ->except(['show']);
 });

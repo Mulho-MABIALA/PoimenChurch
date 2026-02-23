@@ -53,6 +53,7 @@ return [
         'schedules' => 'Horaires des Cultes',
         'testimonials' => 'Témoignages',
         'contact_messages' => 'Messages de Contact',
+        'leadership' => 'Leadership',
         'admin' => 'Administration',
     ],
 

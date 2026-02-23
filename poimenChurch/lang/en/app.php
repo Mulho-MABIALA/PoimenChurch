@@ -53,6 +53,7 @@ return [
         'schedules' => 'Service Schedule',
         'testimonials' => 'Testimonials',
         'contact_messages' => 'Contact Messages',
+        'leadership' => 'Leadership',
         'admin' => 'Administration',
     ],
 

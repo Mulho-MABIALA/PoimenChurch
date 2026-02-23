@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ContactMessage;
 use App\Models\Event;
+use App\Models\LeadershipMember;
 use App\Models\Schedule;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
@@ -44,7 +45,17 @@ class PublicController extends Controller
      */
     public function leadership(): View
     {
-        return view('public.about.leadership');
+        $seniorPastor = LeadershipMember::active()
+            ->where('is_senior_pastor', true)
+            ->ordered()
+            ->first();
+
+        $teamMembers = LeadershipMember::active()
+            ->where('is_senior_pastor', false)
+            ->ordered()
+            ->get();
+
+        return view('public.about.leadership', compact('seniorPastor', 'teamMembers'));
     }
 
     /**
