@@ -63,8 +63,12 @@ class Zone extends Model
     // Statistics
     public function getTotalMembersCountAttribute(): int
     {
-        $directMembers = $this->members()->count();
-        $bacentaMembers = $this->bacentas->sum(fn($bacenta) => $bacenta->members()->count());
+        // Une seule sous-requête au lieu de N requêtes COUNT (N+1 fix)
+        $bacentaIds = $this->bacentas()->pluck('id');
+        $directMembers  = $this->members()->count();
+        $bacentaMembers = \DB::table('bacenta_member')
+            ->whereIn('bacenta_id', $bacentaIds)
+            ->count();
         return $directMembers + $bacentaMembers;
     }
 
@@ -90,16 +94,33 @@ class Zone extends Model
 
     public function getGrowthTrend(int $weeks = 4): array
     {
+        $rangeStart = now()->subWeeks($weeks - 1)->startOfWeek();
+        $rangeEnd   = now()->endOfWeek();
+
+        // Une seule requête GROUP BY au lieu de ($weeks × 2) requêtes en boucle
+        $rows = BacentaReport::selectRaw(
+                'YEARWEEK(report_date, 1) as yw,
+                 SUM(CASE WHEN report_type = ? THEN attendance_count ELSE 0 END) as attendance,
+                 SUM(offering_amount) as offerings',
+                ['sunday_service']
+            )
+            ->whereHas('bacenta', fn($q) => $q->where('zone_id', $this->id))
+            ->whereBetween('report_date', [$rangeStart, $rangeEnd])
+            ->groupByRaw('YEARWEEK(report_date, 1)')
+            ->get()
+            ->keyBy('yw');
+
         $trends = [];
         for ($i = $weeks - 1; $i >= 0; $i--) {
-            $startDate = now()->subWeeks($i)->startOfWeek();
-            $endDate = now()->subWeeks($i)->endOfWeek();
+            $weekStart = now()->subWeeks($i)->startOfWeek();
+            $yw = $weekStart->format('oW');
             $trends[] = [
-                'week' => $startDate->format('d/m'),
-                'attendance' => $this->getWeeklyAttendance('sunday_service', $startDate, $endDate),
-                'offerings' => $this->getWeeklyOfferings($startDate, $endDate),
+                'week'      => $weekStart->format('d/m'),
+                'attendance' => isset($rows[$yw]) ? (int)   $rows[$yw]->attendance : 0,
+                'offerings'  => isset($rows[$yw]) ? (float) $rows[$yw]->offerings  : 0,
             ];
         }
+
         return $trends;
     }
 }

@@ -63,7 +63,9 @@ Route::get('/donner', [PublicController::class, 'give'])->name('give');
 
 // Contact
 Route::get('/contact', [PublicController::class, 'contact'])->name('contact');
-Route::post('/contact', [PublicController::class, 'contactSubmit'])->name('contact.submit');
+Route::post('/contact', [PublicController::class, 'contactSubmit'])
+    ->middleware('throttle:contact')
+    ->name('contact.submit');
 
 // Legal pages
 Route::get('/politique-de-confidentialite', [PublicController::class, 'privacy'])->name('privacy');
@@ -88,7 +90,7 @@ Route::get('/lang/{locale}', function ($locale) {
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [LoginController::class, 'login']);
+    Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:login');
 
     Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
     Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');

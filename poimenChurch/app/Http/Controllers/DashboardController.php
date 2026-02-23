@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Bacenta;
 use App\Models\BacentaReport;
 use App\Models\Branch;
-use App\Models\Department;
 use App\Models\FinancialTransaction;
 use App\Models\User;
 use App\Models\Zone;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
@@ -50,24 +49,48 @@ class DashboardController extends Controller
 
     private function getAdminStats(): array
     {
-        $startOfWeek = now()->startOfWeek();
-        $endOfWeek = now()->endOfWeek();
+        // Comptes structuraux : changent rarement → cache 10 min
+        $counts = Cache::remember('dashboard.admin.counts', 600, function () {
+            return [
+                'total_members'  => User::where('is_active', true)->count(),
+                'total_bacentas' => Bacenta::where('is_active', true)->count(),
+                'total_zones'    => Zone::where('is_active', true)->count(),
+                'total_branches' => Branch::where('is_active', true)->count(),
+            ];
+        });
 
-        return [
-            'total_members' => User::where('is_active', true)->count(),
-            'total_bacentas' => Bacenta::where('is_active', true)->count(),
-            'total_zones' => Zone::where('is_active', true)->count(),
-            'total_branches' => Branch::where('is_active', true)->count(),
-            'weekly_attendance' => BacentaReport::whereBetween('report_date', [$startOfWeek, $endOfWeek])
-                ->where('report_type', 'sunday_service')
-                ->sum('attendance_count'),
-            'weekly_offerings' => BacentaReport::whereBetween('report_date', [$startOfWeek, $endOfWeek])
-                ->sum('offering_amount'),
-            'monthly_tithes' => FinancialTransaction::whereMonth('transaction_date', now()->month)
+        // Stats hebdomadaires : une seule requête agrégée au lieu de 3 séparées
+        $startOfWeek = now()->startOfWeek();
+        $endOfWeek   = now()->endOfWeek();
+
+        $weeklyKey = 'dashboard.admin.weekly.' . $startOfWeek->format('YW');
+        $weekly = Cache::remember($weeklyKey, 300, function () use ($startOfWeek, $endOfWeek) {
+            $reports = BacentaReport::selectRaw(
+                    'SUM(attendance_count) as total_attendance,
+                     SUM(offering_amount) as total_offerings,
+                     SUM(CASE WHEN report_type = ? THEN attendance_count ELSE 0 END) as sunday_attendance',
+                    ['sunday_service']
+                )
+                ->whereBetween('report_date', [$startOfWeek, $endOfWeek])
+                ->first();
+
+            return [
+                'weekly_attendance' => (int)   ($reports->sunday_attendance ?? 0),
+                'weekly_offerings'  => (float) ($reports->total_offerings ?? 0),
+            ];
+        });
+
+        $monthlyTithes = Cache::remember('dashboard.admin.tithes.' . now()->format('Ym'), 600, function () {
+            return FinancialTransaction::whereMonth('transaction_date', now()->month)
+                ->whereYear('transaction_date', now()->year)
                 ->where('transaction_type', 'tithe')
-                ->sum('amount'),
+                ->sum('amount');
+        });
+
+        return array_merge($counts, $weekly, [
+            'monthly_tithes'  => $monthlyTithes,
             'pending_reports' => $this->getPendingReportsCount(),
-        ];
+        ]);
     }
 
     private function getZoneLeaderStats($user): array
@@ -118,37 +141,51 @@ class DashboardController extends Controller
     protected function getChartData($user)
     {
         $weeks = 8;
+        $rangeStart = now()->subWeeks($weeks - 1)->startOfWeek();
+        $rangeEnd   = now()->endOfWeek();
+
+        // Une seule requête GROUP BY au lieu de 16 requêtes en boucle
+        $query = BacentaReport::selectRaw(
+                'YEARWEEK(report_date, 1) as yw,
+                 MIN(report_date) as week_start,
+                 SUM(CASE WHEN report_type = ? THEN attendance_count ELSE 0 END) as attendance,
+                 SUM(offering_amount) as offerings',
+                ['sunday_service']
+            )
+            ->whereBetween('report_date', [$rangeStart, $rangeEnd])
+            ->groupByRaw('YEARWEEK(report_date, 1)')
+            ->orderByRaw('YEARWEEK(report_date, 1)');
+
+        if ($user->hasRole('zone_leader')) {
+            $zoneIds = $user->ledZones->pluck('id');
+            $query->whereHas('bacenta', fn($q) => $q->whereIn('zone_id', $zoneIds));
+        } elseif ($user->hasRole('shepherd')) {
+            $bacentaIds = $user->shepherdedBacentas->pluck('id');
+            $query->whereIn('bacenta_id', $bacentaIds);
+        }
+
+        $rows = $query->get()->keyBy('yw');
+
         $attendanceData = [];
-        $offeringsData = [];
+        $offeringsData  = [];
 
         for ($i = $weeks - 1; $i >= 0; $i--) {
-            $startDate = now()->subWeeks($i)->startOfWeek();
-            $endDate = now()->subWeeks($i)->endOfWeek();
-
-            $query = BacentaReport::whereBetween('report_date', [$startDate, $endDate]);
-
-            if ($user->hasRole('zone_leader')) {
-                $zoneIds = $user->ledZones->pluck('id');
-                $query->whereHas('bacenta', fn($q) => $q->whereIn('zone_id', $zoneIds));
-            } elseif ($user->hasRole('shepherd')) {
-                $bacentaIds = $user->shepherdedBacentas->pluck('id');
-                $query->whereIn('bacenta_id', $bacentaIds);
-            }
+            $weekStart = now()->subWeeks($i)->startOfWeek();
+            $yw = $weekStart->format('oW'); // ISO year-week key
 
             $attendanceData[] = [
-                'week' => $startDate->format('d/m'),
-                'value' => (clone $query)->where('report_type', 'sunday_service')->sum('attendance_count'),
+                'week'  => $weekStart->format('d/m'),
+                'value' => isset($rows[$yw]) ? (int) $rows[$yw]->attendance : 0,
             ];
-
             $offeringsData[] = [
-                'week' => $startDate->format('d/m'),
-                'value' => (clone $query)->sum('offering_amount'),
+                'week'  => $weekStart->format('d/m'),
+                'value' => isset($rows[$yw]) ? (float) $rows[$yw]->offerings : 0,
             ];
         }
 
         return [
             'attendance' => $attendanceData,
-            'offerings' => $offeringsData,
+            'offerings'  => $offeringsData,
         ];
     }
 
