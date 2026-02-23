@@ -340,7 +340,7 @@
     </style>
 
     <!-- Hero Section - Premium Design -->
-    <section class="relative mb-12 overflow-hidden rounded-[2rem] shadow-2xl" aria-label="Bienvenue sur le tableau de bord">
+    <section class="relative mb-12 overflow-hidden rounded-[2rem] shadow-2xl" aria-label="{{ __('app.dashboard.welcome') }}">
         <!-- Animated Gradient Background -->
         <div class="absolute inset-0 bg-gradient-to-br from-primary-800 via-primary-700 to-primary-900 animate-gradient" aria-hidden="true"></div>
 
@@ -392,7 +392,7 @@
 
                     <!-- Subtitle -->
                     <p class="text-primary-100/90 text-lg sm:text-xl max-w-xl leading-relaxed font-light">
-                        Voici un aperçu complet de l'activité de votre église. Restez connecté avec votre communauté.
+                        {{ __('app.dashboard.subtitle') }}
                     </p>
                 </div>
 
@@ -401,7 +401,7 @@
                     @if(isset($stats['total_members']))
                     <div class="glass-premium rounded-2xl p-5 sm:p-6 sm:min-w-[160px] animate-float stagger-1 transition-all duration-300 hover:scale-105 group">
                         <div class="flex items-center justify-between mb-3 gap-2">
-                            <span class="text-white/80 text-xs sm:text-sm font-semibold uppercase tracking-wider truncate">Membres</span>
+                            <span class="text-white/80 text-xs sm:text-sm font-semibold uppercase tracking-wider truncate">{{ __('app.nav.members') }}</span>
                             <div class="p-2 rounded-xl bg-gold-500/20 group-hover:bg-gold-500/30 transition-colors">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -415,7 +415,7 @@
                     @if(isset($stats['total_bacentas']))
                     <div class="glass-premium rounded-2xl p-5 sm:p-6 sm:min-w-[160px] animate-float stagger-2 transition-all duration-300 hover:scale-105 group">
                         <div class="flex items-center justify-between mb-3 gap-2">
-                            <span class="text-white/80 text-xs sm:text-sm font-semibold uppercase tracking-wider truncate">Bacentas</span>
+                            <span class="text-white/80 text-xs sm:text-sm font-semibold uppercase tracking-wider truncate">{{ __('app.nav.bacentas') }}</span>
                             <div class="p-2 rounded-xl bg-growth-500/20 group-hover:bg-growth-500/30 transition-colors">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 text-growth-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
@@ -429,7 +429,7 @@
                     @if(isset($stats['weekly_attendance']))
                     <div class="glass-premium rounded-2xl p-5 sm:p-6 sm:min-w-[160px] animate-float stagger-3 transition-all duration-300 hover:scale-105 group">
                         <div class="flex items-center justify-between mb-3 gap-2">
-                            <span class="text-white/80 text-xs sm:text-sm font-semibold uppercase tracking-wider truncate">Présences</span>
+                            <span class="text-white/80 text-xs sm:text-sm font-semibold uppercase tracking-wider truncate">{{ __('app.dashboard.attendance') }}</span>
                             <div class="p-2 rounded-xl bg-blue-500/20 group-hover:bg-blue-500/30 transition-colors">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -450,7 +450,7 @@
                     <svg class="w-5 h-5 mr-2.5 group-hover:rotate-90 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
-                    Nouveau rapport
+                    {{ __('app.dashboard.new_report') }}
                 </a>
                 @endcan
                 @can('finances.create')
@@ -459,7 +459,7 @@
                     <svg class="w-5 h-5 mr-2.5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    Enregistrer un don
+                    {{ __('app.dashboard.record_donation') }}
                 </a>
                 @endcan
             </div>
@@ -477,7 +477,7 @@
 
             <div class="relative">
                 <div class="flex items-center justify-between mb-4 sm:mb-5">
-                    <span class="text-white/95 text-xs sm:text-sm font-bold uppercase tracking-wider">Offrandes</span>
+                    <span class="text-white/95 text-xs sm:text-sm font-bold uppercase tracking-wider">{{ __('app.dashboard.offerings') }}</span>
                     <div class="p-2.5 bg-white/20 rounded-xl backdrop-blur-sm shadow-inner" aria-hidden="true">
                         <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -487,7 +487,7 @@
                 <p class="text-4xl sm:text-5xl font-bold mb-2 number-premium tracking-tight">{{ number_format($stats['weekly_offerings'], 0, ',', ' ') }}</p>
                 <p class="text-white/85 text-sm font-medium flex items-center gap-2">
                     <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/20 backdrop-blur-sm">XOF</span>
-                    cette semaine
+                    {{ __('app.dashboard.this_week') }}
                 </p>
             </div>
         </article>
@@ -500,7 +500,7 @@
 
             <div class="relative">
                 <div class="flex items-center justify-between mb-4 sm:mb-5">
-                    <span class="text-gray-500 text-xs sm:text-sm font-bold uppercase tracking-wider">Zones</span>
+                    <span class="text-gray-500 text-xs sm:text-sm font-bold uppercase tracking-wider">{{ __('app.nav.zones') }}</span>
                     <div class="p-2.5 bg-primary-100 rounded-xl group-hover:bg-primary-200 group-hover:scale-110 transition-all duration-300" aria-hidden="true">
                         <svg class="w-5 h-5 sm:w-6 sm:h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
@@ -509,7 +509,7 @@
                     </div>
                 </div>
                 <p class="text-4xl sm:text-5xl font-bold text-gray-900 mb-2 counter number-premium tracking-tight" data-target="{{ $stats['total_zones'] }}">0</p>
-                <p class="text-gray-500 text-sm font-medium">zones actives</p>
+                <p class="text-gray-500 text-sm font-medium">{{ __('app.dashboard.active_zones') }}</p>
             </div>
         </article>
         @endif
@@ -521,7 +521,7 @@
 
             <div class="relative">
                 <div class="flex items-center justify-between mb-4 sm:mb-5">
-                    <span class="text-gray-500 text-xs sm:text-sm font-bold uppercase tracking-wider">Branches</span>
+                    <span class="text-gray-500 text-xs sm:text-sm font-bold uppercase tracking-wider">{{ __('app.nav.branches') }}</span>
                     <div class="p-2.5 bg-growth-100 rounded-xl group-hover:bg-growth-200 group-hover:scale-110 transition-all duration-300" aria-hidden="true">
                         <svg class="w-5 h-5 sm:w-6 sm:h-6 text-growth-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
@@ -529,7 +529,7 @@
                     </div>
                 </div>
                 <p class="text-4xl sm:text-5xl font-bold text-gray-900 mb-2 counter number-premium tracking-tight" data-target="{{ $stats['total_branches'] }}">0</p>
-                <p class="text-gray-500 text-sm font-medium">branches établies</p>
+                <p class="text-gray-500 text-sm font-medium">{{ __('app.dashboard.established_branches') }}</p>
             </div>
         </article>
         @endif
@@ -541,7 +541,7 @@
 
             <div class="relative">
                 <div class="flex items-center justify-between mb-4 sm:mb-5">
-                    <span class="text-gray-500 text-xs sm:text-sm font-bold uppercase tracking-wider">En attente</span>
+                    <span class="text-gray-500 text-xs sm:text-sm font-bold uppercase tracking-wider">{{ __('app.dashboard.pending_reports') }}</span>
                     <div class="p-2.5 bg-orange-100 rounded-xl group-hover:bg-orange-200 transition-all duration-300 animate-pulse-ring" aria-hidden="true">
                         <svg class="w-5 h-5 sm:w-6 sm:h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -550,11 +550,11 @@
                 </div>
                 <p class="text-4xl sm:text-5xl font-bold text-orange-600 mb-2 number-premium tracking-tight">{{ $stats['pending_reports'] ?? 0 }}</p>
                 <div class="flex items-center gap-2">
-                    <p class="text-gray-500 text-sm font-medium">rapports à soumettre</p>
+                    <p class="text-gray-500 text-sm font-medium">{{ __('app.dashboard.pending_reports_count') }}</p>
                     @if(($stats['pending_reports'] ?? 0) > 0)
                     <span class="badge-premium bg-orange-100 text-orange-700">
                         <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span>
-                        Action requise
+                        {{ __('app.dashboard.action_required') }}
                     </span>
                     @endif
                 </div>
@@ -571,13 +571,13 @@
             <header class="p-6 sm:p-8 border-b border-gray-100/80 bg-gradient-to-r from-gray-50/50 to-white">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div class="section-header-premium pb-2">
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">Évolution des présences</h3>
-                        <p class="text-gray-500 text-sm mt-1.5 font-medium">Tendance sur les 8 dernières semaines</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">{{ __('app.dashboard.attendance_trend') }}</h3>
+                        <p class="text-gray-500 text-sm mt-1.5 font-medium">{{ __('app.dashboard.trend_subtitle') }}</p>
                     </div>
                     <div class="flex items-center gap-3">
                         <span class="badge-premium bg-primary-50 text-primary-700 border border-primary-100">
                             <span class="w-2 h-2 bg-primary-500 rounded-full" aria-hidden="true"></span>
-                            Présences
+                            {{ __('app.dashboard.attendance') }}
                         </span>
                     </div>
                 </div>
@@ -595,8 +595,8 @@
         <article class="chart-container-premium bg-white rounded-[1.25rem] shadow-sm shadow-gray-100/50 border border-gray-100 overflow-hidden animate-fade-up stagger-2">
             <header class="p-6 sm:p-8 border-b border-gray-100/80 bg-gradient-to-r from-gray-50/50 to-white">
                 <div class="section-header-premium pb-2">
-                    <h3 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">Finances du mois</h3>
-                    <p class="text-gray-500 text-sm mt-1.5 font-medium">Répartition des revenus</p>
+                    <h3 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">{{ __('app.dashboard.month_finances') }}</h3>
+                    <p class="text-gray-500 text-sm mt-1.5 font-medium">{{ __('app.dashboard.revenue_breakdown') }}</p>
                 </div>
             </header>
             <div class="p-6 sm:p-8">
@@ -615,14 +615,14 @@
                     <div class="flex items-center p-3 rounded-xl bg-gray-50/80 hover:bg-gray-100/80 transition-all duration-200 cursor-default group">
                         <span class="w-4 h-4 bg-gradient-to-br from-primary-400 to-primary-600 rounded-lg mr-3 shrink-0 shadow-sm group-hover:scale-110 transition-transform" aria-hidden="true"></span>
                         <div>
-                            <span class="text-sm text-gray-900 font-semibold">Dîmes</span>
+                            <span class="text-sm text-gray-900 font-semibold">{{ __('app.dashboard.tithes') }}</span>
                             <p class="text-xs text-gray-500 number-premium">{{ number_format($stats['monthly_tithes'] ?? 0, 0, ',', ' ') }} XOF</p>
                         </div>
                     </div>
                     <div class="flex items-center p-3 rounded-xl bg-gray-50/80 hover:bg-gray-100/80 transition-all duration-200 cursor-default group">
                         <span class="w-4 h-4 bg-gradient-to-br from-gold-400 to-gold-600 rounded-lg mr-3 shrink-0 shadow-sm group-hover:scale-110 transition-transform" aria-hidden="true"></span>
                         <div>
-                            <span class="text-sm text-gray-900 font-semibold">Offrandes</span>
+                            <span class="text-sm text-gray-900 font-semibold">{{ __('app.dashboard.offerings') }}</span>
                             <p class="text-xs text-gray-500 number-premium">{{ number_format($stats['weekly_offerings'] ?? 0, 0, ',', ' ') }} XOF</p>
                         </div>
                     </div>
@@ -645,8 +645,8 @@
                         </svg>
                     </div>
                     <div class="section-header-premium pb-1">
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">Top Bacentas</h3>
-                        <p class="text-gray-500 text-sm mt-1 font-medium">Meilleures performances cette semaine</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">{{ __('app.dashboard.top_bacentas') }}</h3>
+                        <p class="text-gray-500 text-sm mt-1 font-medium">{{ __('app.dashboard.top_bacentas_subtitle') }}</p>
                     </div>
                 </div>
             </header>
@@ -681,13 +681,13 @@
                                 <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                 </svg>
-                                {{ $bacenta->zone->name ?? 'Zone non assignée' }}
+                                {{ $bacenta->zone->name ?? __('app.dashboard.zone_unassigned') }}
                             </p>
                         </div>
                         <div class="text-right ml-3 flex flex-col items-end">
                             <p class="text-2xl sm:text-3xl font-bold text-primary-700 number-premium">{{ $bacenta->total_attendance ?? 0 }}</p>
                             <span class="badge-premium bg-primary-50 text-primary-600 text-[10px] sm:text-xs mt-1">
-                                présences
+                                {{ __('app.dashboard.attendances_label') }}
                             </span>
                         </div>
                     </li>
@@ -709,13 +709,13 @@
                             </svg>
                         </div>
                         <div class="section-header-premium pb-1">
-                            <h3 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">Activité récente</h3>
-                            <p class="text-gray-500 text-sm mt-1 font-medium">Derniers rapports soumis</p>
+                            <h3 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">{{ __('app.dashboard.recent_activity') }}</h3>
+                            <p class="text-gray-500 text-sm mt-1 font-medium">{{ __('app.dashboard.latest_reports') }}</p>
                         </div>
                     </div>
                     <a href="{{ route('reports.index') }}"
                        class="btn-premium text-sm font-semibold text-primary-600 hover:text-primary-700 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary-50 hover:bg-primary-100 focus-ring transition-all duration-300">
-                        Voir tout
+                        {{ __('app.dashboard.see_all') }}
                         <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
@@ -737,11 +737,11 @@
                                     <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
                                     </svg>
-                                    Dimanche
+                                    {{ __('app.dashboard.sunday_badge') }}
                                 </span>
                                 @else
                                 <span class="badge-premium bg-gray-100 text-gray-600 border border-gray-200">
-                                    Bacenta
+                                    {{ __('app.dashboard.bacenta_badge') }}
                                 </span>
                                 @endif
                             </div>
@@ -792,12 +792,12 @@
                 const easedProgress = easeOutExpo(progress);
                 const current = Math.floor(easedProgress * target);
 
-                counter.textContent = current.toLocaleString('fr-FR');
+                counter.textContent = current.toLocaleString('{{ app()->getLocale() }}');
 
                 if (progress < 1) {
                     requestAnimationFrame(updateCounter);
                 } else {
-                    counter.textContent = target.toLocaleString('fr-FR');
+                    counter.textContent = target.toLocaleString('{{ app()->getLocale() }}');
                 }
             };
 
@@ -829,7 +829,7 @@
             data: {
                 labels: {!! json_encode(collect($charts['attendance'])->pluck('week')) !!},
                 datasets: [{
-                    label: 'Présences',
+                    label: @json(__('app.dashboard.attendance')),
                     data: {!! json_encode(collect($charts['attendance'])->pluck('value')) !!},
                     borderColor: '#1F4D2B',
                     backgroundColor: gradient,
@@ -868,8 +868,8 @@
                         bodyFont: { size: 22, weight: '700', family: 'Inter' },
                         titleMarginBottom: 8,
                         callbacks: {
-                            title: (ctx) => 'Semaine du ' + ctx[0].label,
-                            label: (ctx) => ctx.parsed.y.toLocaleString('fr-FR') + ' présences'
+                            title: (ctx) => @json(__('app.dashboard.week_of')) + ' ' + ctx[0].label,
+                            label: (ctx) => ctx.parsed.y.toLocaleString('{{ app()->getLocale() }}') + ' ' + @json(__('app.dashboard.attendances_label'))
                         }
                     }
                 },
@@ -886,7 +886,7 @@
                             color: '#9ca3af',
                             font: { size: 12, family: 'Inter', weight: '500' },
                             padding: 12,
-                            callback: (value) => value.toLocaleString('fr-FR')
+                            callback: (value) => value.toLocaleString('{{ app()->getLocale() }}')
                         }
                     },
                     x: {
@@ -923,7 +923,7 @@
         new Chart(financeCtx, {
             type: 'doughnut',
             data: {
-                labels: ['Dîmes', 'Offrandes'],
+                labels: [@json(__('app.dashboard.tithes')), @json(__('app.dashboard.offerings'))],
                 datasets: [{
                     data: [{{ $stats['monthly_tithes'] ?? 0 }}, {{ $stats['weekly_offerings'] ?? 0 }}],
                     backgroundColor: [primaryGradient, goldGradient],
@@ -949,7 +949,7 @@
                         titleFont: { size: 13, weight: '500', family: 'Inter' },
                         bodyFont: { size: 18, weight: '700', family: 'Inter' },
                         callbacks: {
-                            label: (ctx) => ctx.label + ': ' + ctx.parsed.toLocaleString('fr-FR') + ' XOF'
+                            label: (ctx) => ctx.label + ': ' + ctx.parsed.toLocaleString('{{ app()->getLocale() }}') + ' XOF'
                         }
                     }
                 },

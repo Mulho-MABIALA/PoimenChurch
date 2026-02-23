@@ -188,9 +188,9 @@
         @endcan
         @endcanany
 
-        <!-- Events Section -->
+        <!-- Content Section -->
         <div class="nav-section">
-            <span class="nav-section-title">Contenu</span>
+            <span class="nav-section-title">{{ __('app.nav.content') }}</span>
         </div>
 
         <a href="{{ route('admin.events.index') }}"
@@ -201,7 +201,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
             </span>
-            <span class="nav-text">Événements</span>
+            <span class="nav-text">{{ __('app.nav.events') }}</span>
         </a>
 
         <a href="{{ route('admin.schedules.index') }}"
@@ -212,7 +212,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
             </span>
-            <span class="nav-text">Horaires des Cultes</span>
+            <span class="nav-text">{{ __('app.nav.schedules') }}</span>
         </a>
 
         <a href="{{ route('admin.testimonials.index') }}"
@@ -223,7 +223,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                 </svg>
             </span>
-            <span class="nav-text">Temoignages</span>
+            <span class="nav-text">{{ __('app.nav.testimonials') }}</span>
         </a>
 
         @php $newContactCount = \App\Models\ContactMessage::nouveau()->count(); @endphp
@@ -235,7 +235,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
             </span>
-            <span class="nav-text">Messages de Contact</span>
+            <span class="nav-text">{{ __('app.nav.contact_messages') }}</span>
             @if($newContactCount > 0)
                 <span class="ml-auto flex-shrink-0 inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1.5 text-[10px] font-bold bg-blue-500 text-white rounded-full">
                     {{ $newContactCount > 99 ? '99+' : $newContactCount }}
@@ -259,7 +259,7 @@
                 <p class="text-sm font-bold text-white truncate">{{ auth()->user()->full_name }}</p>
                 <p class="text-xs text-white/50 truncate flex items-center gap-1.5 mt-0.5">
                     <span class="w-1.5 h-1.5 bg-green-400 rounded-full"></span>
-                    {{ auth()->user()->roles->first()?->name ?? 'Membre' }}
+                    {{ auth()->user()->roles->first()?->name ?? __('app.roles.member') }}
                 </p>
             </div>
             <div class="p-1.5 rounded-lg bg-white/5 group-hover:bg-gold-500/20 transition-all duration-300">
