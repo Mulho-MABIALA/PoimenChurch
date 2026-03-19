@@ -1,0 +1,78 @@
+# -------------------------------------------------------
+# Compression Gzip — réduit la taille des réponses de 60-80%
+# -------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+    AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript
+    AddOutputFilterByType DEFLATE application/json application/xml application/rss+xml
+    AddOutputFilterByType DEFLATE image/svg+xml font/ttf font/otf font/woff font/woff2
+    # Ne pas compresser les fichiers déjà compressés
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|webp|gz|zip|bz2)$ no-gzip dont-vary
+</IfModule>
+
+# -------------------------------------------------------
+# Cache navigateur — les assets statiques ne rechargent pas à chaque visite
+# -------------------------------------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+    # Images
+    ExpiresByType image/jpeg          "access plus 1 year"
+    ExpiresByType image/png           "access plus 1 year"
+    ExpiresByType image/gif           "access plus 1 year"
+    ExpiresByType image/webp          "access plus 1 year"
+    ExpiresByType image/svg+xml       "access plus 1 year"
+    ExpiresByType image/x-icon        "access plus 1 year"
+    # Fonts
+    ExpiresByType font/ttf            "access plus 1 year"
+    ExpiresByType font/woff           "access plus 1 year"
+    ExpiresByType font/woff2          "access plus 1 year"
+    # CSS & JS (Vite génère des noms avec hash → cache long possible)
+    ExpiresByType text/css            "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    # HTML : jamais caché (dynamique)
+    ExpiresByType text/html           "access plus 0 seconds"
+</IfModule>
+
+# -------------------------------------------------------
+# En-têtes de sécurité
+# -------------------------------------------------------
+<IfModule mod_headers.c>
+    # Empêche le clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+    # Empêche le MIME sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    # Force HTTPS (activer seulement en production avec certificat SSL)
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    # Supprime la signature Apache (sécurité par obscurité)
+    Header always unset X-Powered-By
+    Header always unset Server
+</IfModule>
+
+# -------------------------------------------------------
+# Laravel Front Controller
+# -------------------------------------------------------
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Handle X-XSRF-Token Header
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
