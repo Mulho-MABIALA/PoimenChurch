@@ -1,0 +1,46 @@
+services:
+  - type: web
+    name: poimenchurch
+    env: php
+    plan: free
+    buildCommand: ./render-build.sh
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: false
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: poimenchurch-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: poimenchurch-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: poimenchurch-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: poimenchurch-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: poimenchurch-db
+          property: password
+      - key: SESSION_DRIVER
+        value: file
+      - key: CACHE_STORE
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+
+databases:
+  - name: poimenchurch-db
+    plan: free
