@@ -2,36 +2,50 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
     /**
-     * Compatible MySQL 5.7+ et 8.x : vérifie via INFORMATION_SCHEMA
-     * avant de créer l'index pour éviter les erreurs de doublon.
+     * Compatible MySQL et PostgreSQL
      */
+    private function indexExists(string $table, string $indexName): bool
+    {
+        $driver = DB::getDriverName();
+
+        if ($driver === 'pgsql') {
+            $exists = DB::selectOne(
+                'SELECT COUNT(*) as cnt FROM pg_indexes WHERE tablename = ? AND indexname = ?',
+                [$table, $indexName]
+            );
+        } else {
+            $exists = DB::selectOne(
+                'SELECT COUNT(*) as cnt FROM information_schema.statistics
+                 WHERE table_schema = DATABASE() AND table_name = ? AND index_name = ?',
+                [$table, $indexName]
+            );
+        }
+
+        return $exists && $exists->cnt > 0;
+    }
+
     private function createIndex(string $table, string $indexName, string $columns): void
     {
-        $exists = DB::selectOne(
-            'SELECT COUNT(*) as cnt FROM information_schema.statistics
-             WHERE table_schema = DATABASE() AND table_name = ? AND index_name = ?',
-            [$table, $indexName]
-        );
-
-        if (! $exists || $exists->cnt === 0) {
+        if (! $this->indexExists($table, $indexName)) {
             DB::statement("CREATE INDEX {$indexName} ON {$table}({$columns})");
         }
     }
 
     private function dropIndex(string $table, string $indexName): void
     {
-        $exists = DB::selectOne(
-            'SELECT COUNT(*) as cnt FROM information_schema.statistics
-             WHERE table_schema = DATABASE() AND table_name = ? AND index_name = ?',
-            [$table, $indexName]
-        );
+        $driver = DB::getDriverName();
 
-        if ($exists && $exists->cnt > 0) {
-            DB::statement("DROP INDEX {$indexName} ON {$table}");
+        if ($this->indexExists($table, $indexName)) {
+            if ($driver === 'pgsql') {
+                DB::statement("DROP INDEX IF EXISTS {$indexName}");
+            } else {
+                DB::statement("DROP INDEX {$indexName} ON {$table}");
+            }
         }
     }
 
@@ -66,7 +80,7 @@ return new class extends Migration
         $this->createIndex('events', 'idx_events_featured', 'is_published, is_featured');
 
         // schedules
-        $this->createIndex('schedules', 'idx_schedules_active_featured', 'is_active, is_featured, `order`');
+        $this->createIndex('schedules', 'idx_schedules_active_featured', 'is_active, is_featured, "order"');
 
         // testimonials
         $this->createIndex('testimonials', 'idx_testimonials_active_featured', 'is_active, is_featured, display_order');
