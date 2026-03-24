@@ -13,6 +13,9 @@ php artisan view:cache
 # Run migrations
 php artisan migrate --force
 
+# Run seeders
+php artisan db:seed --force
+
 # Fix permissions
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
