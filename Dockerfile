@@ -40,10 +40,13 @@ RUN npm install && npm run build
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache
 
-# Cache Laravel config
-RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 80
+
+CMD ["/usr/local/bin/docker-entrypoint.sh"]
