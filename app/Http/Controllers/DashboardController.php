@@ -146,15 +146,15 @@ class DashboardController extends Controller
 
         // Une seule requête GROUP BY au lieu de 16 requêtes en boucle
         $query = BacentaReport::selectRaw(
-                'YEARWEEK(report_date, 1) as yw,
+                "TO_CHAR(report_date, 'IYYYIW') as yw,
                  MIN(report_date) as week_start,
                  SUM(CASE WHEN report_type = ? THEN attendance_count ELSE 0 END) as attendance,
-                 SUM(offering_amount) as offerings',
+                 SUM(offering_amount) as offerings",
                 ['sunday_service']
             )
             ->whereBetween('report_date', [$rangeStart, $rangeEnd])
-            ->groupByRaw('YEARWEEK(report_date, 1)')
-            ->orderByRaw('YEARWEEK(report_date, 1)');
+            ->groupByRaw("TO_CHAR(report_date, 'IYYYIW')")
+            ->orderByRaw("TO_CHAR(report_date, 'IYYYIW')");
 
         if ($user->hasRole('zone_leader')) {
             $zoneIds = $user->ledZones->pluck('id');
