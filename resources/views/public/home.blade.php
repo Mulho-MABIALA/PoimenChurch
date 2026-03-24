@@ -155,14 +155,24 @@
                                         <div class="space-y-2 sm:space-y-3">
                                             <div class="bg-white/5 rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-white/10 hover:bg-white/10 transition-colors">
                                                 <div class="flex items-center justify-between">
+<<<<<<< HEAD
                                                     <span class="text-white/80 text-sm sm:text-base">Premier culte</span>
                                                     <span class="text-gold-400 font-bold text-base sm:text-lg">08h00</span>
+=======
+                                                    <span class="text-white/80 text-sm sm:text-base">Culte Principal</span>
+                                                    <span class="text-gold-400 font-bold text-base sm:text-lg">09h00</span>
+>>>>>>> 1c44e0580626f9a6fe41b51f1f82c50d1a0c4e36
                                                 </div>
                                             </div>
                                             <div class="bg-white/5 rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-white/10 hover:bg-white/10 transition-colors">
                                                 <div class="flex items-center justify-between">
+<<<<<<< HEAD
                                                     <span class="text-white/80 text-sm sm:text-base">Deuxième culte</span>
                                                     <span class="text-gold-400 font-bold text-base sm:text-lg">10h30</span>
+=======
+                                                    <span class="text-white/80 text-sm sm:text-base">Ecole du Dimanche</span>
+                                                    <span class="text-gold-400 font-bold text-base sm:text-lg">08h30</span>
+>>>>>>> 1c44e0580626f9a6fe41b51f1f82c50d1a0c4e36
                                                 </div>
                                             </div>
                                         </div>
